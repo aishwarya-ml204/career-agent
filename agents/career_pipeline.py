@@ -1,7 +1,6 @@
-from profile_parser import parse_profile
-from job_matcher import match_jobs
-from gap_analyzer import analyze_gap
-
+from agents.profile_parser import parse_profile
+from agents.job_matcher import match_jobs
+from agents.gap_analyzer import analyze_gap
 
 def run_career_analysis(profile_text, top_k=5):
 
