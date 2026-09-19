@@ -2,38 +2,55 @@ from retriever import find_matching_courses
 
 
 def recommend_courses(missing_skills, n_results=5):
-    """Find courses for the missing skills."""
-
     if not missing_skills:
         return []
 
-    # Convert list of missing skills into a search query
-    query = ", ".join(missing_skills)
+    recommendations = []
 
-    results = find_matching_courses(
-        query,
-        n_results=n_results
-    )
+    for skill in missing_skills:
+        results = find_matching_courses(skill, n_results=3)
 
-    return results["metadatas"][0]
+        for course in results["metadatas"][0]:
+            course_skills = course["skills"].lower()
+
+            # Check whether the course directly covers the missing skill
+            if skill.lower() in course_skills:
+                recommendations.append({
+                    "missing_skill": skill,
+                    "course_name": course["course_name"],
+                    "platform": course["platform"],
+                    "skills": course["skills"],
+                    "level": course["level"],
+                    "duration": course["duration"],
+                    "url": course["url"]
+                })
+
+    return recommendations
 
 
 if __name__ == "__main__":
 
     missing_skills = [
-        "TensorFlow",
-        "Docker"
+        "basic deep learning",
+        "git",
+        "pandas",
+        "scikit-learn",
+        "statistics"
     ]
 
     courses = recommend_courses(missing_skills)
 
     print("\n========== RECOMMENDED COURSES ==========")
 
-    for i, course in enumerate(courses):
+    if not courses:
+        print("No exact course matches found.")
 
-        print(f"\nCourse {i + 1}: {course['course_name']}")
-        print(f"Platform: {course['platform']}")
-        print(f"Skills: {course['skills']}")
-        print(f"Level: {course['level']}")
-        print(f"Duration: {course['duration']}")
-        print(f"URL: {course['url']}")
+    for i, course in enumerate(courses):
+        print(f"\nCourse {i + 1}")
+        print("Missing Skill:", course["missing_skill"])
+        print("Course:", course["course_name"])
+        print("Platform:", course["platform"])
+        print("Skills:", course["skills"])
+        print("Level:", course["level"])
+        print("Duration:", course["duration"])
+        print("URL:", course["url"])
