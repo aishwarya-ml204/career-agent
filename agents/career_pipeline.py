@@ -8,6 +8,50 @@ from agents.opportunity_ranker import rank_missing_skills
 from agents.training_path import build_training_path
 
 
+def is_free_course(cost):
+    """
+    Check whether a course is free.
+    """
+    if cost is None:
+        return False
+
+    return str(cost).strip().lower() in [
+        "free",
+        "0",
+        "0.0",
+        "$0",
+        "₹0"
+    ]
+
+
+def calculate_training_summary(training_path):
+    """
+    Calculate total training hours and
+    identify whether the complete path is free.
+    """
+
+    total_hours = 0
+    all_free = True
+
+    for course in training_path:
+
+        # Convert duration hours safely
+        try:
+            hours = float(course["duration_hours"])
+        except (ValueError, TypeError):
+            hours = 0
+
+        total_hours += hours
+
+        if not is_free_course(course["cost"]):
+            all_free = False
+
+    return {
+        "total_hours": total_hours,
+        "all_free": all_free
+    }
+
+
 def run_career_analysis(profile_text, top_k=5):
 
     # Step 1: Parse user profile
@@ -15,7 +59,10 @@ def run_career_analysis(profile_text, top_k=5):
 
     user_skills = profile["skills"]
 
-    print("Detected location:", profile.get("location"))
+    print(
+        "Detected location:",
+        profile.get("location")
+    )
 
     # Step 2: Find matching jobs
     jobs = match_jobs(
@@ -29,7 +76,11 @@ def run_career_analysis(profile_text, top_k=5):
             "profile": profile,
             "jobs": [],
             "priority_skills": [],
-            "training_path": []
+            "training_path": [],
+            "training_summary": {
+                "total_hours": 0,
+                "all_free": True
+            }
         }
 
     # Step 3: Analyze skill gaps
@@ -86,7 +137,9 @@ def run_career_analysis(profile_text, top_k=5):
 
                         break
 
-            course["jobs_unlocked"] = len(unlocked_jobs)
+            course["jobs_unlocked"] = len(
+                unlocked_jobs
+            )
 
             course["opportunity_score"] = len(
                 unlocked_jobs
@@ -105,12 +158,18 @@ def run_career_analysis(profile_text, top_k=5):
         max_steps=5
     )
 
+    # Step 7: Calculate time-to-ready information
+    training_summary = calculate_training_summary(
+        training_path
+    )
+
     # Final result
     return {
         "profile": profile,
         "jobs": results,
         "priority_skills": priority_skills,
-        "training_path": training_path
+        "training_path": training_path,
+        "training_summary": training_summary
     }
 
 
@@ -123,11 +182,16 @@ if __name__ == "__main__":
     I am interested in machine learning and data science.
     """
 
-    result = run_career_analysis(profile_text)
+    result = run_career_analysis(
+        profile_text
+    )
 
     print("\nUSER SKILLS")
     print("-----------")
-    print(result["profile"]["skills"])
+
+    print(
+        result["profile"]["skills"]
+    )
 
     print("\nPRIORITY SKILLS")
     print("---------------")
@@ -148,11 +212,57 @@ if __name__ == "__main__":
     for item in result["training_path"]:
 
         print(
-            f"{item['step']}. "
-            f"{item['skill']} -> "
-            f"{item['course_name']} "
-            f"({item['jobs_unlocked']} jobs)"
+            f"\nStep {item['step']}: "
+            f"{item['skill']}"
         )
+
+        print(
+            "Course:",
+            item["course_name"]
+        )
+
+        print(
+            "Platform:",
+            item["platform"]
+        )
+
+        print(
+            "Level:",
+            item["level"]
+        )
+
+        print(
+            "Duration:",
+            item["duration"]
+        )
+
+        print(
+            "Duration Hours:",
+            item["duration_hours"]
+        )
+
+        print(
+            "Cost:",
+            item["cost"]
+        )
+
+        print(
+            "Jobs potentially unlocked:",
+            item["jobs_unlocked"]
+        )
+
+    print("\nTRAINING SUMMARY")
+    print("----------------")
+
+    print(
+        "Total Training Hours:",
+        result["training_summary"]["total_hours"]
+    )
+
+    print(
+        "Entire Path Free:",
+        result["training_summary"]["all_free"]
+    )
 
     print("\nJOB RECOMMENDATIONS")
     print("-------------------")
@@ -162,7 +272,11 @@ if __name__ == "__main__":
         print("\nJob:", job["job_title"])
         print("Company:", job["company"])
         print("Location:", job["location"])
-        print("Match Score:", job["match_score"])
+
+        print(
+            "Match Score:",
+            job["match_score"]
+        )
 
         print(
             "Missing Skills:",
@@ -184,6 +298,12 @@ if __name__ == "__main__":
                 course["course_name"],
                 "|",
                 course["platform"],
+                "| Duration:",
+                course["duration"],
+                "| Hours:",
+                course["duration_hours"],
+                "| Cost:",
+                course["cost"],
                 "| Opportunity:",
                 course["opportunity_score"],
                 "jobs"

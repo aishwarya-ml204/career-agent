@@ -45,64 +45,83 @@ def skill_matches(missing_skill, course_skill):
         return True
 
     related_skills = {
-        "scikit-learn": ["scikit-learn"],
+        "scikit-learn": [
+            "scikit-learn"
+        ],
+
         "statistics": [
             "statistics",
             "descriptive statistics"
         ],
+
         "deep learning": [
             "deep learning"
         ],
+
         "data visualization": [
             "data visualization"
         ],
+
         "docker": [
             "docker",
             "docker basics",
             "containers"
         ],
+
         "kubernetes": [
             "kubernetes"
         ],
+
         "spark": [
             "spark"
         ],
+
         "airflow": [
             "airflow"
         ],
+
         "etl": [
             "etl",
             "etl basics",
             "etl concepts"
         ],
+
         "data modeling": [
             "data modeling"
         ],
+
         "kafka": [
             "kafka",
             "streaming"
         ],
+
         "llms": [
             "llms"
         ],
+
         "transformers": [
             "transformers"
         ],
+
         "prompt engineering": [
             "prompt engineering"
         ],
+
         "rag": [
             "rag"
         ],
+
         "vector database": [
             "vector database",
             "vector databases (pinecone/faiss)"
         ],
+
         "apis": [
             "apis",
             "rest apis",
             "api gateway"
         ],
+
         "pytorch": [
             "pytorch",
             "pytorch or tensorflow"
@@ -110,12 +129,12 @@ def skill_matches(missing_skill, course_skill):
     }
 
     return course_skill in related_skills.get(
-        missing_skill, []
+        missing_skill,
+        []
     )
 
 
 def recommend_courses(missing_skills, top_k=5):
-
     df = pd.read_csv(COURSES_FILE)
 
     recommendations = []
@@ -142,10 +161,23 @@ def recommend_courses(missing_skills, top_k=5):
                 "platform": row["platform"],
                 "skills": course_skills,
                 "level": row["level"],
+
+                # Existing course information
                 "duration": row["duration"],
+
+                # New compulsory add-on information
+                "duration_hours": row["duration_hours"],
+                "cost": row["cost"],
+
                 "url": row["url"],
-                "matched_skills": list(set(matched_skills)),
-                "exact_matches": len(set(matched_skills)),
+
+                "matched_skills": list(
+                    set(matched_skills)
+                ),
+
+                "exact_matches": len(
+                    set(matched_skills)
+                ),
             })
 
     recommendations.sort(
@@ -154,3 +186,32 @@ def recommend_courses(missing_skills, top_k=5):
     )
 
     return recommendations[:top_k]
+
+
+if __name__ == "__main__":
+
+    test_missing_skills = [
+        "scikit-learn",
+        "statistics",
+        "deep learning"
+    ]
+
+    courses = recommend_courses(
+        test_missing_skills,
+        top_k=5
+    )
+
+    print("\n==============================")
+    print("COURSE RECOMMENDATIONS")
+    print("==============================")
+
+    for course in courses:
+
+        print("\nCourse:", course["course_name"])
+        print("Platform:", course["platform"])
+        print("Level:", course["level"])
+        print("Duration:", course["duration"])
+        print("Duration Hours:", course["duration_hours"])
+        print("Cost:", course["cost"])
+        print("Matched Skills:", course["matched_skills"])
+        print("URL:", course["url"])
