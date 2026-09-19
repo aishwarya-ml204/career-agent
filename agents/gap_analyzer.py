@@ -2,7 +2,7 @@ import re
 
 
 def normalize_skill(skill):
-    skill = skill.lower().strip()
+    skill = str(skill).lower().strip()
 
     replacements = {
         "ml": "machine learning",
@@ -10,6 +10,7 @@ def normalize_skill(skill):
         "powerbi": "power bi",
         "nodejs": "node.js",
         "js": "javascript",
+        "py": "python",
     }
 
     return replacements.get(skill, skill)
@@ -30,35 +31,38 @@ def extract_skills(skill_text):
 
 def analyze_gap(user_skills, required_skills):
 
+    # Normalize user's skills
     user_skills = {
         normalize_skill(skill)
         for skill in user_skills
     }
 
+    # Extract and normalize required skills
     required_skills = extract_skills(required_skills)
 
-    matched = []
-    missing = []
+    matched_skills = []
+    missing_skills = []
 
     for skill in required_skills:
 
         if skill in user_skills:
-            matched.append(skill)
+            matched_skills.append(skill)
         else:
-            missing.append(skill)
+            missing_skills.append(skill)
 
-    total = len(required_skills)
+    total_required = len(required_skills)
 
-    gap_percentage = (
-        len(missing) / total * 100
-        if total > 0
-        else 0
-    )
+    if total_required > 0:
+        gap_percentage = (
+            len(missing_skills) / total_required
+        ) * 100
+    else:
+        gap_percentage = 0
 
     return {
-        "matched_skills": matched,
-        "missing_skills": missing,
-        "total_required": total,
+        "matched_skills": matched_skills,
+        "missing_skills": missing_skills,
+        "total_required": total_required,
         "gap_percentage": round(gap_percentage, 2)
     }
 
@@ -72,25 +76,25 @@ if __name__ == "__main__":
         "NumPy"
     ]
 
-    required = """
+    required_skills = """
     Python, Scikit-learn, Pandas, NumPy,
     Statistics, SQL, Basic Deep Learning
     """
 
     result = analyze_gap(
         user_skills,
-        required
+        required_skills
     )
 
-    print("\nSkill Gap Analysis")
-    print("------------------")
+    print("\n========== SKILL GAP ANALYSIS ==========")
 
-    print("Matched skills:")
+    print("\nMatched Skills:")
     for skill in result["matched_skills"]:
         print("  ✓", skill)
 
-    print("\nMissing skills:")
+    print("\nMissing Skills:")
     for skill in result["missing_skills"]:
         print("  ✗", skill)
 
-    print("\nGap:", result["gap_percentage"], "%")
+    print("\nTotal Required:", result["total_required"])
+    print("Gap:", result["gap_percentage"], "%")

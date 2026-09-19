@@ -1,6 +1,8 @@
+
 from agents.profile_parser import parse_profile
 from agents.job_matcher import match_jobs
 from agents.gap_analyzer import analyze_gap
+from agents.course_recommender import recommend_courses
 
 def run_career_analysis(profile_text, top_k=5):
 
@@ -24,6 +26,12 @@ def run_career_analysis(profile_text, top_k=5):
             user_skills,
             job["REQUIRED_SKILLS"]
         )
+        courses = recommend_courses(
+    gap["missing_skills"],
+    top_k=3
+        )
+        
+
 
         results.append({
             "job_id": job["JOB_ID"],
@@ -33,7 +41,8 @@ def run_career_analysis(profile_text, top_k=5):
             "match_score": round(float(job["match_score"]), 3),
             "matched_skills": gap["matched_skills"],
             "missing_skills": gap["missing_skills"],
-            "gap_percentage": gap["gap_percentage"]
+            "gap_percentage": gap["gap_percentage"],
+            "recommended_courses": courses
         })
 
     return {
@@ -61,9 +70,20 @@ I am interested in machine learning and data science.
     print("-------------------")
 
     for job in result["jobs"]:
+
         print("\nJob:", job["job_title"])
         print("Company:", job["company"])
         print("Location:", job["location"])
         print("Match Score:", job["match_score"])
         print("Missing Skills:", job["missing_skills"])
         print("Gap:", job["gap_percentage"], "%")
+
+        print("Recommended Courses:")
+
+        for course in job["recommended_courses"]:
+            print(
+            "  -",
+            course["course_name"],
+            "|",
+            course["platform"]
+            )
