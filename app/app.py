@@ -1,4 +1,3 @@
-# Streamlit application
 import sys
 from pathlib import Path
 
@@ -34,13 +33,16 @@ st.title("🎯 Career Agent")
 
 st.markdown(
     """
-    **AI-powered career guidance for skill-gap analysis and job matching**
+    **AI-powered career guidance using local job opportunities,
+    skill-gap analysis and personalized training paths.**
 
-    Enter your profile details below. The Career Agent will:
-    - 🔍 Understand your profile
-    - 💼 Find relevant jobs
-    - 📊 Analyze your skill gaps
-    - 📚 Recommend training courses
+    The Career Agent:
+    - 🔍 Parses your profile
+    - 💼 Matches you with relevant jobs
+    - 📊 Identifies missing skills
+    - 📈 Ranks skills by job opportunity
+    - 📚 Recommends relevant courses
+    - 🛣️ Creates a personalized training path
     """
 )
 
@@ -63,7 +65,7 @@ with col1:
     )
 
     skills = st.text_input(
-        "💻 Skills",
+        "💻 Current Skills",
         placeholder="Example: Python, SQL, Pandas, NumPy"
     )
 
@@ -109,8 +111,6 @@ if analyze_button:
 
     else:
 
-        # Combine all profile infoprofile_text = f"""rmation
-        
         profile_text = f"""
         I am a {education}.
         I live in {location}.
@@ -133,13 +133,15 @@ if analyze_button:
                         "profile_text": profile_text,
                         "profile": {},
                         "jobs": [],
-                        "courses": []
+                        "priority_skills": [],
+                        "training_path": []
                     }
                 )
 
                 st.success(
                     "Career analysis completed successfully! 🎉"
                 )
+
 
                 # --------------------------------------------------
                 # Profile Summary
@@ -193,6 +195,55 @@ if analyze_button:
 
 
                 # --------------------------------------------------
+                # Priority Skills
+                # --------------------------------------------------
+
+                st.divider()
+
+                st.header("📈 Skills With Highest Opportunity")
+
+                priority_skills = result.get(
+                    "priority_skills",
+                    []
+                )
+
+                if priority_skills:
+
+                    st.caption(
+                        "These are missing skills that occur across the matched job postings."
+                    )
+
+                    for index, item in enumerate(
+                        priority_skills[:10],
+                        start=1
+                    ):
+
+                        with st.container(border=True):
+
+                            col1, col2 = st.columns([3, 1])
+
+                            with col1:
+
+                                st.markdown(
+                                    f"### {index}. "
+                                    f"{item.get('skill', 'N/A')}"
+                                )
+
+                            with col2:
+
+                                st.metric(
+                                    "Jobs potentially unlocked",
+                                    item.get("job_count", 0)
+                                )
+
+                else:
+
+                    st.info(
+                        "No priority skills were identified."
+                    )
+
+
+                # --------------------------------------------------
                 # Job Recommendations
                 # --------------------------------------------------
 
@@ -213,7 +264,10 @@ if analyze_button:
 
                 else:
 
-                    for index, job in enumerate(jobs, start=1):
+                    for index, job in enumerate(
+                        jobs,
+                        start=1
+                    ):
 
                         match_score = float(
                             job.get(
@@ -222,7 +276,6 @@ if analyze_button:
                             )
                         )
 
-                        # Convert similarity to percentage
                         match_percentage = max(
                             0,
                             min(
@@ -234,13 +287,19 @@ if analyze_button:
                             )
                         )
 
+                        gap_percentage = job.get(
+                            "gap_percentage",
+                            0
+                        )
+
                         with st.container(border=True):
 
                             st.subheader(
-                                f"{index}. {job.get('job_title', 'Job')}"
+                                f"{index}. "
+                                f"{job.get('job_title', 'Job')}"
                             )
 
-                            job_col1, job_col2 = st.columns(2)
+                            job_col1, job_col2, job_col3 = st.columns(3)
 
                             with job_col1:
 
@@ -249,17 +308,24 @@ if analyze_button:
                                     f"{job.get('company', 'N/A')}"
                                 )
 
+                            with job_col2:
+
                                 st.write(
                                     f"**📍 Location:** "
                                     f"{job.get('location', 'N/A')}"
                                 )
 
-                            with job_col2:
+                            with job_col3:
 
                                 st.metric(
                                     "Match",
                                     f"{match_percentage}%"
                                 )
+
+                            st.write(
+                                f"**Skill Gap:** "
+                                f"{gap_percentage}%"
+                            )
 
                             st.markdown(
                                 "**✅ Matched Skills**"
@@ -307,76 +373,116 @@ if analyze_button:
                                     "No major skill gaps identified."
                                 )
 
+                            # Job-specific courses
+                            courses = job.get(
+                                "recommended_courses",
+                                []
+                            )
+
+                            if courses:
+
+                                st.markdown(
+                                    "**📚 Recommended Courses for This Job**"
+                                )
+
+                                for course in courses[:5]:
+
+                                    course_name = course.get(
+                                        "course_name",
+                                        "Course"
+                                    )
+
+                                    platform = course.get(
+                                        "platform",
+                                        "N/A"
+                                    )
+
+                                    opportunity = course.get(
+                                        "opportunity_score",
+                                        0
+                                    )
+
+                                    st.write(
+                                        f"• **{course_name}** "
+                                        f"({platform}) — "
+                                        f"{opportunity} jobs potentially unlocked"
+                                    )
+
+                                    course_url = course.get(
+                                        "url"
+                                    )
+
+                                    if course_url:
+
+                                        st.link_button(
+                                            "View Course",
+                                            course_url
+                                        )
+
 
                 # --------------------------------------------------
-                # Course Recommendations
+                # Personalized Training Path
                 # --------------------------------------------------
 
                 st.divider()
 
-                st.header("📚 Recommended Training")
+                st.header("🛣️ Personalized Training Path")
 
-                courses = result.get(
-                    "courses",
+                training_path = result.get(
+                    "training_path",
                     []
                 )
 
-                if not courses:
+                if not training_path:
 
                     st.info(
-                        "No course recommendations available."
+                        "No training path could be generated."
                     )
 
                 else:
 
-                    for index, course in enumerate(
-                        courses,
-                        start=1
-                    ):
+                    st.caption(
+                        "Courses are selected for the highest-priority missing skills."
+                    )
+
+                    for item in training_path:
 
                         with st.container(border=True):
 
                             st.subheader(
-                                f"{index}. "
-                                f"{course.get('course_name', 'Course')}"
+                                f"Step {item.get('step', '')}: "
+                                f"{item.get('skill', 'Skill')}"
                             )
 
-                            course_col1, course_col2 = st.columns(2)
-
-                            with course_col1:
-
-                                st.write(
-                                    f"**Platform:** "
-                                    f"{course.get('platform', 'N/A')}"
-                                )
-
-                                st.write(
-                                    f"**Level:** "
-                                    f"{course.get('level', 'N/A')}"
-                                )
-
-                            with course_col2:
-
-                                st.write(
-                                    f"**Duration:** "
-                                    f"{course.get('duration', 'N/A')}"
-                                )
-
-                            recommended_skills = course.get(
-                                "skills",
-                                []
+                            st.write(
+                                f"**📚 Course:** "
+                                f"{item.get('course_name', 'N/A')}"
                             )
 
-                            if recommended_skills:
+                            st.write(
+                                f"**🏫 Platform:** "
+                                f"{item.get('platform', 'N/A')}"
+                            )
 
-                                st.write(
-                                    "**Skills covered:** "
-                                    + ", ".join(
-                                        recommended_skills
-                                    )
+                            st.write(
+                                f"**📊 Level:** "
+                                f"{item.get('level', 'N/A')}"
+                            )
+
+                            st.write(
+                                f"**⏱️ Duration:** "
+                                f"{item.get('duration', 'N/A')}"
+                            )
+
+                            st.metric(
+                                "Jobs potentially unlocked",
+                                item.get(
+                                    "jobs_unlocked",
+                                    0
                                 )
+                            )
 
-                            course_url = course.get(
+                            course_url = item.get(
                                 "url"
                             )
 
@@ -394,25 +500,22 @@ if analyze_button:
 
                 st.divider()
 
-                st.header("💡 Career Summary")
+                st.header("💡 Career Analysis Summary")
 
-                if jobs:
+                st.info(
+                    f"""
+                    The system analyzed your profile against
+                    **{len(jobs)} job opportunities**.
 
-                    best_job = jobs[0]
+                    It identified **{len(priority_skills)} priority
+                    skill gaps** and generated a training path
+                    containing **{len(training_path)} learning steps**.
 
-                    st.info(
-                        f"""
-                        Based on your current profile, the system identified
-                        **{len(jobs)} relevant job opportunities**.
+                    The recommendations are based on the skills
+                    required by the matched job postings.
+                    """
+                )
 
-                        Your top matching role is:
-
-                        **{best_job.get('job_title', 'N/A')}**
-
-                        The system also identified skill gaps and retrieved
-                        training resources to help you prepare for these roles.
-                        """
-                    )
 
             except Exception as error:
 

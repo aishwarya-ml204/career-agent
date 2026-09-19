@@ -5,8 +5,6 @@ COURSES_FILE = "data/courses.csv"
 
 
 def normalize_skill(skill):
-    """Normalize skill names for comparison."""
-
     skill = str(skill).lower().strip()
 
     replacements = {
@@ -16,14 +14,10 @@ def normalize_skill(skill):
         "nodejs": "node.js",
         "js": "javascript",
         "py": "python",
-
-        # Handle variations
         "scikit learn": "scikit-learn",
-        "scikit learn ": "scikit-learn",
         "data visualisation": "data visualization",
         "pytorch or tensorflow": "deep learning",
         "basic deep learning": "deep learning",
-        "aws (s3, glue, redshift)": "aws",
         "vector databases": "vector database",
     }
 
@@ -31,8 +25,6 @@ def normalize_skill(skill):
 
 
 def split_skills(skill_text):
-    """Convert a course skill field into individual skills."""
-
     if not skill_text:
         return []
 
@@ -46,64 +38,91 @@ def split_skills(skill_text):
 
 
 def skill_matches(missing_skill, course_skill):
-    """
-    Check whether a course skill is relevant to a missing skill.
-    """
-
     missing_skill = normalize_skill(missing_skill)
     course_skill = normalize_skill(course_skill)
 
-    # Exact match
     if missing_skill == course_skill:
         return True
 
-    # Useful related mappings
     related_skills = {
         "scikit-learn": ["scikit-learn"],
-        "statistics": ["statistics", "descriptive statistics"],
-        "basic deep learning": ["deep learning", "basic deep learning"],
-        "deep learning": ["deep learning", "basic deep learning"],
-        "data visualization": ["data visualization"],
-        "docker": ["docker", "docker basics", "containers"],
-        "kubernetes": ["kubernetes"],
-        "spark": ["spark"],
-        "airflow": ["airflow"],
-        "etl": ["etl", "etl basics", "etl concepts"],
-        "data modeling": ["data modeling"],
-        "kafka": ["kafka", "streaming"],
-        "llms": ["llms"],
-        "transformers": ["transformers"],
-        "prompt engineering": ["prompt engineering"],
-        "rag": ["rag"],
+        "statistics": [
+            "statistics",
+            "descriptive statistics"
+        ],
+        "deep learning": [
+            "deep learning"
+        ],
+        "data visualization": [
+            "data visualization"
+        ],
+        "docker": [
+            "docker",
+            "docker basics",
+            "containers"
+        ],
+        "kubernetes": [
+            "kubernetes"
+        ],
+        "spark": [
+            "spark"
+        ],
+        "airflow": [
+            "airflow"
+        ],
+        "etl": [
+            "etl",
+            "etl basics",
+            "etl concepts"
+        ],
+        "data modeling": [
+            "data modeling"
+        ],
+        "kafka": [
+            "kafka",
+            "streaming"
+        ],
+        "llms": [
+            "llms"
+        ],
+        "transformers": [
+            "transformers"
+        ],
+        "prompt engineering": [
+            "prompt engineering"
+        ],
+        "rag": [
+            "rag"
+        ],
         "vector database": [
             "vector database",
             "vector databases (pinecone/faiss)"
         ],
-        "apis": ["apis", "rest apis", "api gateway"],
-        "pytorch": ["pytorch", "pytorch or tensorflow"],
+        "apis": [
+            "apis",
+            "rest apis",
+            "api gateway"
+        ],
+        "pytorch": [
+            "pytorch",
+            "pytorch or tensorflow"
+        ],
     }
 
-    if missing_skill in related_skills:
-        return course_skill in related_skills[missing_skill]
-
-    return False
+    return course_skill in related_skills.get(
+        missing_skill, []
+    )
 
 
 def recommend_courses(missing_skills, top_k=5):
-    """
-    Recommend courses based on the candidate's missing skills.
-    """
 
-    if not missing_skills:
-        return []
-
-    courses = pd.read_csv(COURSES_FILE)
+    df = pd.read_csv(COURSES_FILE)
 
     recommendations = []
 
-    for _, course in courses.iterrows():
+    for _, row in df.iterrows():
 
-        course_skills = split_skills(course["skills"])
+        course_skills = split_skills(row["skills"])
 
         matched_skills = []
 
@@ -112,57 +131,26 @@ def recommend_courses(missing_skills, top_k=5):
             for course_skill in course_skills:
 
                 if skill_matches(missing_skill, course_skill):
-
-                    matched_skills.append(
-                        normalize_skill(missing_skill)
-                    )
-
+                    matched_skills.append(missing_skill)
                     break
 
         if matched_skills:
 
             recommendations.append({
-                "course_id": course["course_id"],
-                "course_name": course["course_name"],
-                "platform": course["platform"],
-                "skills": matched_skills,
-                "level": course["level"],
-                "duration": course["duration"],
-                "url": course["url"],
-                "relevance": len(matched_skills)
+                "course_id": row["course_id"],
+                "course_name": row["course_name"],
+                "platform": row["platform"],
+                "skills": course_skills,
+                "level": row["level"],
+                "duration": row["duration"],
+                "url": row["url"],
+                "matched_skills": list(set(matched_skills)),
+                "exact_matches": len(set(matched_skills)),
             })
 
-    # Remove duplicate skills inside a course
-    for course in recommendations:
-        course["skills"] = list(
-            dict.fromkeys(course["skills"])
-        )
-
-    # Highest number of matched missing skills first
     recommendations.sort(
-        key=lambda x: x["relevance"],
+        key=lambda x: x["exact_matches"],
         reverse=True
     )
 
     return recommendations[:top_k]
-
-
-if __name__ == "__main__":
-
-    missing_skills = [
-        "Django",
-        "REST APIs"
-    ]
-
-    results = recommend_courses(
-        missing_skills
-    )
-
-    for course in results:
-
-        print("\nCourse:", course["course_name"])
-        print("Platform:", course["platform"])
-        print("Skills:", course["skills"])
-        print("Level:", course["level"])
-        print("Duration:", course["duration"])
-        print("URL:", course["url"])
