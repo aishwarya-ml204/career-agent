@@ -10,7 +10,10 @@ def build_training_path(priority_skills, max_steps=5):
         skill = item["skill"]
         job_count = item["job_count"]
 
-        courses = recommend_courses([skill], top_k=10)
+        courses = recommend_courses(
+            [skill],
+            top_k=10
+        )
 
         if not courses:
             continue
@@ -19,6 +22,7 @@ def build_training_path(priority_skills, max_steps=5):
         skill_lower = skill.lower().strip()
 
         def course_priority(course):
+
             course_name = course["course_name"].lower().strip()
 
             # Exact phrase in course name
@@ -27,7 +31,11 @@ def build_training_path(priority_skills, max_steps=5):
 
             # Individual words from the skill in course name
             skill_words = skill_lower.split()
-            if all(word in course_name for word in skill_words):
+
+            if all(
+                word in course_name
+                for word in skill_words
+            ):
                 return 2
 
             return 1
@@ -41,12 +49,27 @@ def build_training_path(priority_skills, max_steps=5):
 
         training_path.append({
             "step": len(training_path) + 1,
+
             "skill": skill,
+
             "course_name": selected_course["course_name"],
+
             "platform": selected_course["platform"],
+
             "level": selected_course["level"],
+
+            # Course duration
             "duration": selected_course["duration"],
+
+            # Course duration in hours
+            "duration_hours": selected_course["duration_hours"],
+
+            # Course cost
+            "cost": selected_course["cost"],
+
             "url": selected_course["url"],
+
+            # Number of jobs this skill could potentially unlock
             "jobs_unlocked": job_count
         })
 
@@ -65,15 +88,52 @@ if __name__ == "__main__":
         {"skill": "git", "job_count": 1}
     ]
 
-    training_path = build_training_path(priority_skills)
+    training_path = build_training_path(
+        priority_skills
+    )
 
     print("\n====================")
     print("TRAINING PATH")
     print("====================")
 
     for item in training_path:
-        print(f"\nStep {item['step']}: {item['skill']}")
-        print(f"Course: {item['course_name']}")
-        print(f"Platform: {item['platform']}")
-        print(f"Level: {item['level']}")
-        print(f"Jobs potentially unlocked: {item['jobs_unlocked']}")
+
+        print(
+            f"\nStep {item['step']}: "
+            f"{item['skill']}"
+        )
+
+        print(
+            f"Course: "
+            f"{item['course_name']}"
+        )
+
+        print(
+            f"Platform: "
+            f"{item['platform']}"
+        )
+
+        print(
+            f"Level: "
+            f"{item['level']}"
+        )
+
+        print(
+            f"Duration: "
+            f"{item['duration']}"
+        )
+
+        print(
+            f"Duration Hours: "
+            f"{item['duration_hours']}"
+        )
+
+        print(
+            f"Cost: "
+            f"{item['cost']}"
+        )
+
+        print(
+            f"Jobs potentially unlocked: "
+            f"{item['jobs_unlocked']}"
+        )
