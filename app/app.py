@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 
 import streamlit as st
+from pypdf import PdfReader
 
 
 # Add project root to Python path
@@ -85,6 +86,23 @@ def format_hours(hours):
     return f"{hours:.1f}"
 
 
+def extract_resume_text(uploaded_file):
+    """Extract text from an uploaded PDF resume."""
+
+    reader = PdfReader(uploaded_file)
+
+    text = ""
+
+    for page in reader.pages:
+
+        page_text = page.extract_text()
+
+        if page_text:
+            text += page_text + "\n"
+
+    return text
+
+
 # --------------------------------------------------
 # Header
 # --------------------------------------------------
@@ -98,6 +116,7 @@ st.markdown(
 
     The Career Agent:
     - 🔍 Parses your profile
+    - 📄 Reads your resume
     - 💼 Matches you with relevant jobs
     - 📊 Identifies missing skills
     - 📈 Ranks skills by job opportunity
@@ -144,6 +163,54 @@ with col2:
     )
 
 
+# --------------------------------------------------
+# Resume Upload
+# --------------------------------------------------
+
+st.subheader("📄 Resume Upload")
+
+uploaded_resume = st.file_uploader(
+    "Upload your resume in PDF format",
+    type=["pdf"]
+)
+
+if uploaded_resume:
+
+    st.success(
+        f"Resume uploaded: {uploaded_resume.name}"
+    )
+
+    try:
+
+        resume_text = extract_resume_text(
+            uploaded_resume
+        )
+
+        if resume_text.strip():
+
+            with st.expander("👀 View extracted resume text"):
+
+                st.text_area(
+                    "Resume Text",
+                    resume_text,
+                    height=250
+                )
+
+        else:
+
+            st.warning(
+                "No readable text was found in the PDF."
+            )
+
+    except Exception as error:
+
+        st.error(
+            "Unable to read the uploaded PDF."
+        )
+
+        st.exception(error)
+
+
 st.write("")
 
 
@@ -176,7 +243,6 @@ st.caption(
     "and your selected weekly study time."
 )
 
-
 st.write("")
 
 
@@ -197,20 +263,61 @@ analyze_button = st.button(
 
 if analyze_button:
 
-    if not education and not skills and not location and not interests:
+    if (
+        not education
+        and not skills
+        and not location
+        and not interests
+        and not uploaded_resume
+    ):
 
         st.warning(
-            "Please enter at least some profile information."
+            "Please enter some profile information or upload a resume."
         )
 
     else:
+
+        # ----------------------------------------------
+        # Extract resume text
+        # ----------------------------------------------
+
+        resume_text = ""
+
+        if uploaded_resume:
+
+            try:
+
+                resume_text = extract_resume_text(
+                    uploaded_resume
+                )
+
+            except Exception as error:
+
+                st.error(
+                    "Could not extract text from the uploaded resume."
+                )
+
+                st.exception(error)
+
+
+        # ----------------------------------------------
+        # Create profile text
+        # ----------------------------------------------
 
         profile_text = f"""
         I am a {education}.
         I live in {location}.
         I know {skills}.
         I am interested in {interests}.
+
+        Resume information:
+        {resume_text}
         """
+
+
+        # ----------------------------------------------
+        # Run Career Agent
+        # ----------------------------------------------
 
         with st.spinner(
             "🔄 Analyzing your profile and finding opportunities..."
@@ -294,7 +401,9 @@ if analyze_button:
 
                 st.divider()
 
-                st.header("📈 Skills With Highest Opportunity")
+                st.header(
+                    "📈 Skills With Highest Opportunity"
+                )
 
                 priority_skills = result.get(
                     "priority_skills",
@@ -327,7 +436,10 @@ if analyze_button:
 
                                 st.metric(
                                     "Jobs potentially unlocked",
-                                    item.get("job_count", 0)
+                                    item.get(
+                                        "job_count",
+                                        0
+                                    )
                                 )
 
                 else:
@@ -487,9 +599,13 @@ if analyze_button:
 
                                 for course in courses:
 
-                                    if free_only and not is_free_course(
-                                        course.get("cost")
+                                    if (
+                                        free_only
+                                        and not is_free_course(
+                                            course.get("cost")
+                                        )
                                     ):
+
                                         continue
 
                                     displayed_courses.append(
@@ -625,6 +741,7 @@ if analyze_button:
                             if not is_free_course(
                                 item.get("cost")
                             ):
+
                                 continue
 
                         filtered_training_path.append(
@@ -641,10 +758,10 @@ if analyze_button:
                     )
 
                     ready_days = (
-    (total_hours / weekly_hours) * 7
-    if weekly_hours > 0
-    else 0
-)
+                        (total_hours / weekly_hours) * 7
+                        if weekly_hours > 0
+                        else 0
+                    )
 
 
                     # ----------------------------------------------
