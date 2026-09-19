@@ -2,68 +2,157 @@ from agents.profile_parser import parse_profile
 from agents.job_matcher import match_jobs
 from agents.gap_analyzer import analyze_gap
 
+
 def run_career_analysis(profile_text, top_k=5):
 
-    # Step 1: Parse user profile
+    # ========================================================
+    # 1. PARSE USER PROFILE
+    # ========================================================
+
     profile = parse_profile(profile_text)
-    user_skills = profile["skills"]
-    print("Detected location:", profile.get("location"))
-    # Step 2: Find matching jobs
+
+    user_skills = profile.get(
+        "skills",
+        []
+    )
+
+    location = profile.get(
+        "location",
+        ""
+    )
+
+
+    # ========================================================
+    # 2. FIND JOB MATCHES
+    # ========================================================
+
     jobs = match_jobs(
-    user_skills,
-    location=profile.get("location"),
-    top_k=top_k
-)
+        user_skills=user_skills,
+        location=location,
+        top_k=top_k
+    )
 
-    results = []
 
-    # Step 3: Analyze skill gaps for each job
-    for _, job in jobs.iterrows():
+    # ========================================================
+    # 3. ANALYZE SKILL GAPS FOR EACH JOB
+    # ========================================================
 
-        gap = analyze_gap(
-            user_skills,
-            job["REQUIRED_SKILLS"]
+    processed_jobs = []
+
+
+    for job in jobs:
+
+        required_skills = job.get(
+            "required_skills",
+            ""
         )
 
-        results.append({
-            "job_id": job["JOB_ID"],
-            "job_title": job["JOB_TITLE"],
-            "company": job["COMPANY"],
-            "location": job["LOCATION"],
-            "match_score": round(float(job["match_score"]), 3),
-            "matched_skills": gap["matched_skills"],
-            "missing_skills": gap["missing_skills"],
-            "gap_percentage": gap["gap_percentage"]
-        })
+
+        # ----------------------------------------------------
+        # Convert required skills to list if necessary
+        # ----------------------------------------------------
+
+        if isinstance(required_skills, str):
+
+            required_skills_list = [
+                skill.strip()
+                for skill in required_skills.split(",")
+                if skill.strip()
+            ]
+
+        elif isinstance(required_skills, list):
+
+            required_skills_list = required_skills
+
+        else:
+
+            required_skills_list = []
+
+
+        # ----------------------------------------------------
+        # Calculate skill gap
+        # ----------------------------------------------------
+
+        try:
+
+            gap = analyze_gap(
+                user_skills,
+                required_skills_list
+            )
+
+        except Exception:
+
+            # Safe fallback
+            user_skill_set = {
+                str(skill).lower().strip()
+                for skill in user_skills
+            }
+
+            required_skill_set = {
+                str(skill).lower().strip()
+                for skill in required_skills_list
+            }
+
+            matched = [
+                skill
+                for skill in required_skills_list
+                if str(skill).lower().strip()
+                in user_skill_set
+            ]
+
+            missing = [
+                skill
+                for skill in required_skills_list
+                if str(skill).lower().strip()
+                not in user_skill_set
+            ]
+
+            gap = {
+                "matched_skills": matched,
+                "missing_skills": missing,
+                "gap_percentage": (
+                    len(missing)
+                    / len(required_skills_list)
+                    * 100
+                    if required_skills_list
+                    else 0
+                )
+            }
+
+
+        # ----------------------------------------------------
+        # Add gap information to job
+        # ----------------------------------------------------
+
+        processed_job = dict(job)
+
+
+        processed_job["matched_skills"] = gap.get(
+            "matched_skills",
+            []
+        )
+
+        processed_job["missing_skills"] = gap.get(
+            "missing_skills",
+            []
+        )
+
+        processed_job["gap_percentage"] = gap.get(
+            "gap_percentage",
+            0
+        )
+
+
+        processed_jobs.append(
+            processed_job
+        )
+
+
+    # ========================================================
+    # 4. FINAL RESULT
+    # ========================================================
 
     return {
         "profile": profile,
-        "jobs": results
+        "jobs": processed_jobs
     }
-
-
-if __name__ == "__main__":
-
-    profile_text = """
-I am a B.Tech Computer Science student.
-I live in Bengaluru, Karnataka.
-I know Python, SQL, Pandas and NumPy.
-I am interested in machine learning and data science.
-"""
-
-    result = run_career_analysis(profile_text)
-
-    print("\nUSER SKILLS")
-    print("-----------")
-    print(result["profile"]["skills"])
-
-    print("\nJOB RECOMMENDATIONS")
-    print("-------------------")
-
-    for job in result["jobs"]:
-        print("\nJob:", job["job_title"])
-        print("Company:", job["company"])
-        print("Location:", job["location"])
-        print("Match Score:", job["match_score"])
-        print("Missing Skills:", job["missing_skills"])
-        print("Gap:", job["gap_percentage"], "%")
