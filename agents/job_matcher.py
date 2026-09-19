@@ -1,7 +1,5 @@
-# Job matching agent
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
-
 
 MODEL_NAME = "all-MiniLM-L6-v2"
 
@@ -9,32 +7,70 @@ MODEL_NAME = "all-MiniLM-L6-v2"
 def load_jobs():
     return pd.read_csv("data/job.csv")
 
+
+def normalize_city(location):
+    if not location:
+        return ""
+
+    location = str(location).lower().strip()
+
+    # Only use the city part
+    city = location.split(",")[0].strip()
+
+    aliases = {
+        "bangalore": "bengaluru",
+        "bengaluru": "bengaluru",
+        "bombay": "mumbai",
+        "mumbai": "mumbai",
+        "gurgaon": "gurugram",
+        "gurugram": "gurugram",
+    }
+
+    return aliases.get(city, city)
+
+
 def match_jobs(user_skills, location=None, top_k=5):
+
     jobs = load_jobs()
 
-    # Filter jobs by location if provided
+    print("\n--- JOB MATCHING ---")
+    print("Total jobs:", len(jobs))
+    print("User location:", location)
+
+    # ------------------------------------------
+    # Location filtering
+    # ------------------------------------------
+
     if location:
-        location = location.lower().strip()
 
-        # Handle common city name variation
-        location_aliases = {
-            "bangalore": "bengaluru",
-            "bombay": "mumbai",
-            "gurgaon": "gurugram"
-        }
+        user_city = normalize_city(location)
 
-        location = location_aliases.get(location, location)
+        print("Normalized user city:", user_city)
 
-        jobs = jobs[
+        jobs["normalized_city"] = (
             jobs["LOCATION"]
             .fillna("")
-            .str.lower()
-            .str.contains(location, na=False)
-        ]
+            .apply(normalize_city)
+        )
 
-    # If no jobs are available in that location
+        jobs = jobs[
+            jobs["normalized_city"] == user_city
+        ].copy()
+
+        print(
+            "Jobs after location filter:",
+            len(jobs)
+        )
+
     if jobs.empty:
+
+        print("No jobs found for location:", location)
+
         return jobs
+
+    # ------------------------------------------
+    # Semantic skill matching
+    # ------------------------------------------
 
     model = SentenceTransformer(MODEL_NAME)
 
@@ -62,36 +98,17 @@ def match_jobs(user_skills, location=None, top_k=5):
         job_embeddings
     )[0]
 
-    jobs = jobs.copy()
     jobs["match_score"] = similarities.cpu().numpy()
 
-    return jobs.sort_values(
+    jobs = jobs.sort_values(
         "match_score",
         ascending=False
-    ).head(top_k)
-
-
-
-if __name__ == "__main__":
-
-    user_skills = [
-        "python",
-        "sql",
-        "pandas",
-        "numpy"
-    ]
-
-    results = match_jobs(user_skills)
-
-    print(
-        results[
-            [
-                "JOB_ID",
-                "JOB_TITLE",
-                "COMPANY",
-                "LOCATION",
-                "REQUIRED_SKILLS",
-                "match_score"
-            ]
-        ].to_string(index=False)
     )
+
+    # Remove temporary column
+    if "normalized_city" in jobs.columns:
+        jobs = jobs.drop(
+            columns=["normalized_city"]
+        )
+
+    return jobs.head(top_k)
