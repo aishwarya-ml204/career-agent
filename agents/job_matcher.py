@@ -7,7 +7,9 @@ from sentence_transformers import SentenceTransformer, util
 # MODEL
 # ============================================================
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
+MODEL_NAME = "all-MiniLM-L6-v2"
+
+model = SentenceTransformer(MODEL_NAME)
 
 
 # ============================================================
@@ -40,7 +42,6 @@ def normalize_location(location):
 
     location = str(location).lower().strip()
 
-    # Remove extra spaces
     location = " ".join(
         location.split()
     )
@@ -49,39 +50,52 @@ def normalize_location(location):
         "banglore": "bengaluru",
         "bangalore": "bengaluru",
         "blr": "bengaluru",
+        "bengaluru": "bengaluru",
 
         "mysore": "mysuru",
+        "mysuru": "mysuru",
 
         "bombay": "mumbai",
+        "mumbai": "mumbai",
 
         "madras": "chennai",
+        "chennai": "chennai",
 
         "calcutta": "kolkata",
+        "kolkata": "kolkata",
 
-        "new delhi": "delhi"
+        "gurgaon": "gurugram",
+        "gurugram": "gurugram",
+
+        "new delhi": "delhi",
+        "delhi": "delhi",
     }
 
     for old, new in replacements.items():
 
         if location == old:
-
             location = new
-
             break
 
         if location.startswith(old + ","):
-
             location = new + location[len(old):]
-
             break
 
         if location.startswith(old + " "):
-
             location = new + location[len(old):]
-
             break
 
     return location
+
+
+def normalize_city(location):
+
+    if not location:
+        return ""
+
+    normalized = normalize_location(location)
+
+    return normalized.split(",")[0].strip()
 
 
 # ============================================================
@@ -119,18 +133,13 @@ def location_matches(
     if not job:
         return False
 
-    # Exact normalized match
     if user == job:
         return True
 
-    # City contained in "City, State"
     user_city = user.split(",")[0].strip()
     job_city = job.split(",")[0].strip()
 
-    if user_city == job_city:
-        return True
-
-    return False
+    return user_city == job_city
 
 
 # ============================================================
@@ -160,27 +169,22 @@ def match_jobs(
             user_skills or ""
         )
 
-
     skills_text = normalize_text(
         skills_text
     )
-
 
     # --------------------------------------------------------
     # No skills
     # --------------------------------------------------------
 
     if not skills_text:
-
         return []
 
-
     # --------------------------------------------------------
-    # LOCATION FILTER FIRST
+    # LOCATION FILTER
     # --------------------------------------------------------
 
     filtered_df = jobs_df.copy()
-
 
     if location:
 
@@ -202,15 +206,7 @@ def match_jobs(
                     index
                 )
 
-
-        # ----------------------------------------------------
-        # IMPORTANT:
-        # If the requested location has no jobs,
-        # return EMPTY.
-        #
-        # Never show jobs from another city.
-        # ----------------------------------------------------
-
+        # Never show jobs from another city
         if not matching_indexes:
 
             print(
@@ -219,11 +215,12 @@ def match_jobs(
 
             return []
 
-
         filtered_df = filtered_df.loc[
             matching_indexes
         ].copy()
 
+    if filtered_df.empty:
+        return []
 
     # --------------------------------------------------------
     # CREATE JOB TEXT
@@ -243,7 +240,6 @@ def match_jobs(
             normalize_text(text)
         )
 
-
     # --------------------------------------------------------
     # CREATE EMBEDDINGS
     # --------------------------------------------------------
@@ -258,7 +254,6 @@ def match_jobs(
         convert_to_tensor=True
     )
 
-
     # --------------------------------------------------------
     # SIMILARITY
     # --------------------------------------------------------
@@ -267,7 +262,6 @@ def match_jobs(
         user_embedding,
         job_embeddings
     )[0]
-
 
     # --------------------------------------------------------
     # ADD MATCH SCORE
@@ -278,7 +272,6 @@ def match_jobs(
         for score in similarities
     ]
 
-
     # --------------------------------------------------------
     # SORT
     # --------------------------------------------------------
@@ -288,13 +281,11 @@ def match_jobs(
         ascending=False
     )
 
-
     # --------------------------------------------------------
     # BUILD RESULTS
     # --------------------------------------------------------
 
     results = []
-
 
     for _, row in filtered_df.head(
         top_k
@@ -348,6 +339,5 @@ def match_jobs(
                 )
             }
         )
-
 
     return results

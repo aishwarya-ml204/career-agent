@@ -1,101 +1,101 @@
-course_id,course_name,platform,skills,level,duration,url
-C001,Python,Kaggle Learn,"Python, Basic Python, Programming Fundamentals, Problem Solving",Beginner,5 hours,https://www.kaggle.com/learn/python
-C002,Intro to Programming,Kaggle Learn,"Programming Fundamentals, Problem Solving, DSA",Beginner,5 hours,https://www.kaggle.com/learn/intro-to-programming
-C003,Scientific Computing with Python,freeCodeCamp,"Python, Programming Fundamentals, Data Structures, Debugging",Beginner,300 hours,https://www.freecodecamp.org/learn/scientific-computing-with-python/
-C004,JavaScript Algorithms and Data Structures,freeCodeCamp,"JavaScript, Data Structures, DSA, OOP, Problem Solving",Beginner,300 hours,https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/
-C005,Data Structures and Algorithms Specialization,Coursera,"Data Structures, DSA, Problem Solving, Any of C++/Java/Python, Any of Java/Python/C++",Intermediate,8 months,https://www.coursera.org/specializations/data-structures-algorithms
-C006,Object Oriented Programming in Java,Coursera,"Java, OOP, Core Java, Data Structures",Beginner,4 months,https://www.coursera.org/specializations/object-oriented-programming
-C007,Foundational C# with Microsoft,freeCodeCamp,"C#, OOP, Programming Fundamentals, Debugging",Beginner,35 hours,https://www.freecodecamp.org/learn/foundational-c-sharp-with-microsoft/
-C008,C++ Programming Topic Hub,Udemy,"C++11/14/17, STL, Multithreading, CMake, Debugging (GDB)",Intermediate,Varies,https://www.udemy.com/topic/c-plus-plus/
-C009,Version Control with Git,Coursera,"Git, Version Control, Collaboration",Beginner,13 hours,https://www.coursera.org/learn/version-control-with-git
-C010,Spring Boot Guides,Spring.io,"Spring Boot, Spring, Java, REST APIs, Microservices, Maven",Intermediate,Self-paced,https://spring.io/guides
-C011,Building Scalable Java Microservices,Coursera,"Java, Microservices, Spring Boot, REST APIs, Cloud Fundamentals",Intermediate,15 hours,https://www.coursera.org/learn/google-cloud-java-spring
-C012,Java Persistence with Hibernate & JPA,Udemy,"Hibernate, Java, SQL, Entity Mapping, Maven",Intermediate,Varies,https://www.udemy.com/topic/hibernate/
-C013,Unit Testing with JUnit,Udemy,"JUnit, Unit Testing, Java, Test Automation",Intermediate,Varies,https://www.udemy.com/topic/junit/
-C014,Build Web Apps with ASP.NET Core,Microsoft Learn,"ASP.NET Core, C#, Entity Framework, Web API, LINQ",Intermediate,Self-paced,https://learn.microsoft.com/en-us/training/browse/?terms=ASP.NET%20Core
-C015,Back End Development and APIs,freeCodeCamp,"Node.js, Node.js or Java, REST APIs, MongoDB, JSON, APIs",Intermediate,300 hours,https://www.freecodecamp.org/learn/back-end-development-and-apis/
-C016,Django for Everybody,Coursera,"Django, Python, Web Development, SQL, REST APIs",Intermediate,4 months,https://www.coursera.org/specializations/django
-C017,Flask Web Development,Udemy,"Flask, Python, REST APIs, Web Development",Intermediate,Varies,https://www.udemy.com/topic/flask/
-C018,API Design and Fundamentals of Google Cloud's Apigee,Coursera,"REST, APIs, API Gateway, OpenAPI/Swagger, OAuth 2.0",Intermediate,10 hours,https://www.coursera.org/learn/api-design-apigee-gcp
-C019,GraphQL Topic Hub,Udemy,"GraphQL, APIs, Node.js, JSON",Intermediate,Varies,https://www.udemy.com/topic/graphql/
-C020,Software Design and Architecture Specialization,Coursera,"System Design, OOP, Microservices, Design Patterns",Advanced,5 months,https://www.coursera.org/specializations/software-design-architecture
-C021,Responsive Web Design,freeCodeCamp,"HTML5, CSS3, HTML/CSS, Responsive Design, Bootstrap",Beginner,300 hours,https://www.freecodecamp.org/learn/responsive-web-design/
-C022,Front End Development Libraries,freeCodeCamp,"React.js, Redux, jQuery, Bootstrap, JavaScript",Intermediate,300 hours,https://www.freecodecamp.org/learn/front-end-development-libraries/
-C023,Learn React (Official Tutorial),React.dev,"React.js, JavaScript, Component Design, Redux",Intermediate,Self-paced,https://react.dev/learn
-C024,TypeScript Handbook,TypeScript Official,"TypeScript, JavaScript, Type Systems",Intermediate,Self-paced,https://www.typescriptlang.org/docs/handbook/intro.html
-C025,Webpack Topic Hub,Udemy,"Webpack, JavaScript, Build Tooling, Front End Development",Intermediate,Varies,https://www.udemy.com/topic/webpack/
-C026,Data Visualization with D3.js,freeCodeCamp,"Data Visualization, JavaScript, D3.js, JSON",Intermediate,300 hours,https://www.freecodecamp.org/learn/data-visualization/
-C027,PHP Topic Hub,Udemy,"PHP or Node.js, Web Development, MySQL",Beginner,Varies,https://www.udemy.com/topic/php/
-C028,Intro to SQL,Kaggle Learn,"SQL, SQL Basics, Data Cleaning",Beginner,3 hours,https://www.kaggle.com/learn/intro-to-sql
-C029,Advanced SQL,Kaggle Learn,"SQL, Advanced SQL, Data Modeling, Analytics",Intermediate,4 hours,https://www.kaggle.com/learn/advanced-sql
-C030,Relational Database Certification,freeCodeCamp,"PostgreSQL, SQL, Git, Linux, Shell Scripting",Intermediate,300 hours,https://www.freecodecamp.org/learn/relational-database/
-C031,MySQL Topic Hub,Udemy,"MySQL, SQL, Database Design, Query Optimization",Beginner,Varies,https://www.udemy.com/topic/mysql/
-C032,SQL Server Fundamentals,Microsoft Learn,"SQL Server, SQL, T-SQL, Data Modeling",Intermediate,Self-paced,https://learn.microsoft.com/en-us/training/browse/?terms=SQL%20Server
-C033,MongoDB Basics,MongoDB University,"MongoDB, SQL/NoSQL, JSON, Data Modeling",Beginner,Self-paced,https://learn.mongodb.com/
-C034,Redis University,Redis,"Redis, Caching, SQL/NoSQL, System Design",Intermediate,Self-paced,https://redis.io/university/
-C035,Google Data Analytics Professional Certificate,Coursera,"SQL, Excel, Data Cleaning, Data Visualization, Statistics, Tableau",Beginner,6 months,https://www.coursera.org/professional-certificates/google-data-analytics
-C036,Pandas,Kaggle Learn,"Pandas, Python, Python (Pandas), Data Cleaning",Beginner,4 hours,https://www.kaggle.com/learn/pandas
-C037,Data Cleaning,Kaggle Learn,"Data Cleaning, Pandas, Data Validation, Python",Intermediate,4 hours,https://www.kaggle.com/learn/data-cleaning
-C038,Data Visualization (Seaborn),Kaggle Learn,"Data Visualization, Python, Pandas, Descriptive Statistics",Beginner,4 hours,https://www.kaggle.com/learn/data-visualization
-C039,Data Analysis with Python,freeCodeCamp,"Python, Pandas, NumPy, Data Visualization, Statistics",Intermediate,300 hours,https://www.freecodecamp.org/learn/data-analysis-with-python/
-C040,Microsoft Power BI Data Analyst Certificate,Coursera,"Power BI, DAX, Data Modeling, Power BI or Tableau, Data Visualization",Beginner,5 months,https://www.coursera.org/professional-certificates/microsoft-power-bi-data-analyst
-C041,Analyze Data with Power BI,Microsoft Learn,"Power BI, DAX, Data Modeling, Reporting Automation",Intermediate,Self-paced,https://learn.microsoft.com/en-us/training/browse/?terms=Power%20BI
-C042,Tableau Business Intelligence Analyst Certificate,Coursera,"Tableau, Data Visualization, Business Acumen, SQL",Beginner,5 months,https://www.coursera.org/professional-certificates/tableau-business-intelligence-analyst
-C043,Excel Skills for Business Specialization,Coursera,"Excel, Excel (Advanced), Excel (Pivot, VBA), Data Validation",Beginner,6 months,https://www.coursera.org/specializations/excel
-C044,Statistics with Python Specialization,Coursera,"Statistics, Descriptive Statistics, Probability, Python",Intermediate,4 months,https://www.coursera.org/specializations/statistics-with-python
-C045,IBM Data Engineering Professional Certificate,Coursera,"ETL, ETL Basics, ETL Concepts, Python, SQL, Data Warehousing, Airflow, Spark",Beginner,6 months,https://www.coursera.org/professional-certificates/ibm-data-engineer
-C046,Apache Spark Official Documentation & Quick Start,Apache Spark,"Spark, Python, Data Modeling, ETL",Intermediate,Self-paced,https://spark.apache.org/docs/latest/quick-start.html
-C047,Apache Airflow Tutorials,Apache Airflow,"Airflow, Python, ETL, Data Pipelines",Intermediate,Self-paced,https://airflow.apache.org/docs/apache-airflow/stable/tutorial/index.html
-C048,Apache Kafka Documentation & Quickstart,Apache Kafka,"Kafka, Microservices, System Design, Streaming",Intermediate,Self-paced,https://kafka.apache.org/quickstart
-C049,Data Warehousing for Business Intelligence,Coursera,"Data Warehousing, Star Schema, ETL, SQL, Data Modeling",Intermediate,5 months,https://www.coursera.org/specializations/data-warehousing
-C050,SSIS and SSRS Topic Hub,Udemy,"SSIS, SSRS, SQL Server, ETL, Reporting Automation",Intermediate,Varies,https://www.udemy.com/topic/ssis/
-C051,Intro to Machine Learning,Kaggle Learn,"Scikit-learn, Python, Pandas, Basic Deep Learning, Statistics",Beginner,3 hours,https://www.kaggle.com/learn/intro-to-machine-learning
-C052,Intermediate Machine Learning,Kaggle Learn,"Scikit-learn, Feature Engineering, Pandas, Python",Intermediate,4 hours,https://www.kaggle.com/learn/intermediate-machine-learning
-C053,Intro to Deep Learning,Kaggle Learn,"Basic Deep Learning, PyTorch or TensorFlow, Python",Intermediate,4 hours,https://www.kaggle.com/learn/intro-to-deep-learning
-C054,Machine Learning Specialization,Coursera,"Scikit-learn, Python, Statistics, Linear Algebra, Probability",Beginner,2 months,https://www.coursera.org/specializations/machine-learning-introduction
-C055,Deep Learning Specialization,Coursera,"PyTorch, PyTorch or TensorFlow, Transformers, NLP, Basic Deep Learning",Intermediate,3 months,https://www.coursera.org/specializations/deep-learning
-C056,Machine Learning with Python,freeCodeCamp,"Python, Scikit-learn, NLP, Basic Deep Learning, NumPy",Intermediate,300 hours,https://www.freecodecamp.org/learn/machine-learning-with-python/
-C057,Mathematics for Machine Learning Specialization,Coursera,"Linear Algebra, Probability, Statistics, Python",Intermediate,3 months,https://www.coursera.org/specializations/mathematics-machine-learning
-C058,Machine Learning Engineering for Production (MLOps),Coursera,"MLOps, Docker, Kubernetes, Python, CI/CD, Model Deployment",Advanced,3 months,https://www.coursera.org/specializations/machine-learning-engineering-for-production-mlops
-C059,Natural Language Processing Specialization,Coursera,"NLP, Transformers, BERT, Text Classification, NER, PyTorch",Advanced,3 months,https://www.coursera.org/specializations/natural-language-processing
-C060,Hugging Face NLP Course,Hugging Face,"Hugging Face, Transformers, BERT, NLP, Fine-tuning, PyTorch",Intermediate,Self-paced,https://huggingface.co/learn/nlp-course
-C061,spaCy Advanced NLP Course,spaCy,"spaCy, NLP, NER, Text Classification, Python",Intermediate,Self-paced,https://course.spacy.io/en/
-C062,Generative AI with Large Language Models,Coursera,"LLMs, Prompt Engineering, Fine-tuning, Transformers, Python",Intermediate,16 hours,https://www.coursera.org/learn/generative-ai-with-llms
-C063,LangChain and RAG Short Courses,DeepLearning.AI,"LangChain, RAG, LLMs, Vector Databases, Vector Databases (Pinecone/FAISS), Prompt Engineering",Intermediate,Varies,https://www.deeplearning.ai/short-courses/
-C064,Azure AI Engineer Learning Paths,Microsoft Learn,"AWS/Azure AI, LLMs, Azure, Prompt Engineering, APIs",Intermediate,Self-paced,https://learn.microsoft.com/en-us/training/browse/?terms=Azure%20AI
-C065,AWS Cloud Practitioner Essentials,AWS Skill Builder,"AWS, AWS Fundamentals, Cloud Fundamentals, IAM, EC2, S3",Beginner,7 hours,https://explore.skillbuilder.aws/learn/courses/134/aws-cloud-practitioner-essentials
-C066,AWS Fundamentals Specialization,Coursera,"AWS, AWS or Azure, AWS Lambda, S3, EC2, DynamoDB, IAM, CloudFormation",Beginner,3 months,https://www.coursera.org/specializations/aws-fundamentals
-C067,Azure Fundamentals (AZ-900),Microsoft Learn,"Azure, AWS or Azure, Cloud Fundamentals, Entra ID, Networking",Beginner,Self-paced,https://learn.microsoft.com/en-us/training/browse/?terms=AZ-900
-C068,Azure Administrator and Bicep Learning Paths,Microsoft Learn,"Azure, ARM/Bicep, PowerShell, Networking, Entra ID, IAM",Intermediate,Self-paced,https://learn.microsoft.com/en-us/training/browse/?terms=Bicep
-C069,AWS Skill Builder Catalog,AWS Skill Builder,"AWS (S3, Glue, Redshift), Glue, Redshift, API Gateway, AWS Lambda",Intermediate,Varies,https://explore.skillbuilder.aws/learn
-C070,Docker Get Started Guide,Docker Docs,"Docker, Docker Basics, Containers, Linux, YAML",Beginner,Self-paced,https://docs.docker.com/get-started/
-C071,Kubernetes Official Tutorials,Kubernetes.io,"Kubernetes, Kubernetes (AKS), Docker, YAML, Linux",Intermediate,Self-paced,https://kubernetes.io/docs/tutorials/
-C072,Terraform Tutorials,HashiCorp Developer,"Terraform, AWS/Azure, Cloud Fundamentals, YAML, IAM",Intermediate,Self-paced,https://developer.hashicorp.com/terraform/tutorials
-C073,Google Cloud DevOps and SRE Specialization,Coursera,"CI/CD, SLO/SLI, Incident Response, Kubernetes, Prometheus",Advanced,4 months,https://www.coursera.org/specializations/developing-apps-gke
-C074,Jenkins Topic Hub,Udemy,"Jenkins, Jenkins Basics, CI/CD, CI Integration, Git",Intermediate,Varies,https://www.udemy.com/topic/jenkins/
-C075,Ansible Topic Hub,Udemy,"Ansible, YAML, Linux, Shell Scripting, Automation",Intermediate,Varies,https://www.udemy.com/topic/ansible/
-C076,Azure DevOps Learning Paths,Microsoft Learn,"Azure DevOps, CI/CD, Git, Azure, YAML",Intermediate,Self-paced,https://learn.microsoft.com/en-us/training/browse/?terms=Azure%20DevOps
-C077,Prometheus and Grafana Monitoring,Udemy,"Prometheus, Grafana, Kubernetes, Linux, Observability",Intermediate,Varies,https://www.udemy.com/topic/prometheus/
-C078,Linux Command Line Basics and Administration,Udemy,"Linux, Linux Internals, Shell Scripting, Bash/Python, Scripting, Python/Bash, Python or Bash",Beginner,Varies,https://www.udemy.com/topic/linux/
-C079,Learn Go (Official Tour),Go.dev,"Go or Python, Concurrency, System Design",Intermediate,Self-paced,https://go.dev/tour/welcome/1
-C080,Software Testing and Automation Specialization,Coursera,"Manual Testing, Test Automation, Test Planning, SDLC/STLC, STLC, Embedded Testing Basics",Intermediate,4 months,https://www.coursera.org/specializations/software-testing-automation
-C081,Quality Assurance Certification,freeCodeCamp,"Quality Assurance, Unit Testing, Node.js, Test Automation",Intermediate,300 hours,https://www.freecodecamp.org/learn/quality-assurance/
-C082,Selenium WebDriver Topic Hub,Udemy,"Selenium, Selenium WebDriver, Selenium Basics, TestNG, Java or Python, Python or Java, Test Automation",Intermediate,Varies,https://www.udemy.com/topic/selenium-webdriver/
-C083,API Testing with Postman,Postman Learning Center,"Postman, API Testing (Postman), REST Assured, APIs, JSON",Beginner,Self-paced,https://learning.postman.com/
-C084,Software Testing Fundamentals Topic Hub,Udemy,"Manual Testing, Manual Testing Concepts, Test Case Design, Test Case Writing, Regression Testing, Bug Reporting, Defect Management, UAT Support",Beginner,Varies,https://www.udemy.com/topic/software-testing/
-C085,BDD with Cucumber,Udemy,"BDD/Cucumber, Test Automation, Java or Python, TestNG/PyTest",Intermediate,Varies,https://www.udemy.com/topic/cucumber/
-C086,Agile with Atlassian Jira,Coursera,"JIRA, Agile, Bug Reporting, Defect Management, Ticketing Systems",Beginner,13 hours,https://www.coursera.org/learn/agile-atlassian-jira
-C087,Google Cybersecurity Professional Certificate,Coursera,"Network Security, SIEM, Incident Response, Threat Detection, Linux, Python, Risk Assessment",Beginner,6 months,https://www.coursera.org/professional-certificates/google-cybersecurity
-C088,Information Security Certification,freeCodeCamp,"Information Security, Network Security, Encryption, Python, Vulnerability Assessment",Intermediate,300 hours,https://www.freecodecamp.org/learn/information-security/
-C089,IBM Cybersecurity Analyst Professional Certificate,Coursera,"SIEM (Splunk/QRadar), Log Analysis, Incident Triage, Incident Response, Threat Detection, MITRE ATT&CK",Beginner,8 months,https://www.coursera.org/professional-certificates/ibm-cybersecurity-analyst
-C090,Introduction to Cybersecurity,Cisco Networking Academy,"Network Security, Networking, Firewalls, Cyber Threats",Beginner,6 hours,https://www.netacad.com/courses/introduction-to-cybersecurity
-C091,Splunk Free Training,Splunk Education,"SIEM, SIEM (Splunk/QRadar), Log Analysis, Threat Detection",Intermediate,Varies,https://www.splunk.com/en_us/training/free-courses/overview.html
-C092,ISO 27001 and Security Compliance Topic Hub,Udemy,"ISO 27001, Compliance (RBI/ISO 27001), Audit, Security Policy, Risk Assessment, DLP",Intermediate,Varies,https://www.udemy.com/topic/iso-27001/
-C093,Vulnerability Assessment with Nessus and OpenVAS,Udemy,"Vulnerability Assessment, Nessus, Network Security, Penetration Testing",Intermediate,Varies,https://www.udemy.com/topic/vulnerability-assessment/
-C094,Google IT Support Professional Certificate,Coursera,"Windows/Linux Administration, Networking, Troubleshooting, Active Directory, Hardware Troubleshooting, Customer Communication",Beginner,6 months,https://www.coursera.org/professional-certificates/google-it-support
-C095,Networking Essentials,Cisco Networking Academy,"Networking, Networking (TCP/IP, DNS), Networking Basics, DNS, Firewalls",Beginner,70 hours,https://www.netacad.com/courses/networking-essentials
-C096,ServiceNow Learning Paths,ServiceNow Learning,"Ticketing (ServiceNow), Ticketing Systems, Troubleshooting, Documentation, Product Knowledge",Beginner,Varies,https://nowlearning.servicenow.com/
-C097,Windows Server and Active Directory Learning Paths,Microsoft Learn,"Active Directory, Windows/Linux Administration, PowerShell, IAM, Entra ID",Intermediate,Self-paced,https://learn.microsoft.com/en-us/training/browse/?terms=Active%20Directory
-C098,Agile Development Specialization,Coursera,"Agile, SDLC/STLC, Requirement Gathering, Documentation",Beginner,4 months,https://www.coursera.org/specializations/agile-development
-C099,Business Analysis and Requirements Topic Hub,Udemy,"Requirement Gathering, Solution Design, Business Acumen, Client Communication, Documentation, Integration",Intermediate,Varies,https://www.udemy.com/topic/business-analysis/
-C100,Oracle and SAP ERP/CRM Topic Hub,Udemy,"ERP/CRM Modules, Solution Design, Integration, Client Communication",Intermediate,Varies,https://www.udemy.com/topic/sap/
+course_id,course_name,platform,skills,level,duration,duration_hours,cost,url
+C001,Python,Kaggle Learn,"Python, Basic Python, Programming Fundamentals, Problem Solving",Beginner,1 week,5,Free,https://www.kaggle.com/learn/python
+C002,Intro to Programming,Kaggle Learn,"Programming Fundamentals, Problem Solving, DSA",Beginner,1 week,5,Free,https://www.kaggle.com/learn/intro-to-programming
+C003,Scientific Computing with Python,freeCodeCamp,"Python, Programming Fundamentals, Data Structures, Debugging",Beginner,30 weeks,300,Free,https://www.freecodecamp.org/learn/scientific-computing-with-python/
+C004,JavaScript Algorithms and Data Structures,freeCodeCamp,"JavaScript, Data Structures, DSA, OOP, Problem Solving",Beginner,30 weeks,300,Free,https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/
+C005,Data Structures and Algorithms Specialization,Coursera,"Data Structures, DSA, Problem Solving, Any of C++/Java/Python, Any of Java/Python/C++",Intermediate,35 weeks,217,$49/month,https://www.coursera.org/specializations/data-structures-algorithms
+C006,Object Oriented Programming in Java,Coursera,"Java, OOP, Core Java, Data Structures",Beginner,17 weeks,260,$49/month,https://www.coursera.org/specializations/object-oriented-programming
+C007,Foundational C# with Microsoft,freeCodeCamp,"C#, OOP, Programming Fundamentals, Debugging",Beginner,4 weeks,35,Free,https://www.freecodecamp.org/learn/foundational-c-sharp-with-microsoft/
+C008,C++ Programming Topic Hub,Udemy,"C++11/14/17, STL, Multithreading, CMake, Debugging (GDB)",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/c-plus-plus/
+C009,Version Control with Git,Coursera,"Git, Version Control, Collaboration",Beginner,1 week,13,$49-$99,https://www.coursera.org/learn/version-control-with-git
+C010,Spring Boot Guides,Spring.io,"Spring Boot, Spring, Java, REST APIs, Microservices, Maven",Intermediate,Varies,-,Free,https://spring.io/guides
+C011,Building Scalable Java Microservices,Coursera,"Java, Microservices, Spring Boot, REST APIs, Cloud Fundamentals",Intermediate,2 weeks,15,$49-$99,https://www.coursera.org/learn/google-cloud-java-spring
+C012,Java Persistence with Hibernate & JPA,Udemy,"Hibernate, Java, SQL, Entity Mapping, Maven",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/hibernate/
+C013,Unit Testing with JUnit,Udemy,"JUnit, Unit Testing, Java, Test Automation",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/junit/
+C014,Build Web Apps with ASP.NET Core,Microsoft Learn,"ASP.NET Core, C#, Entity Framework, Web API, LINQ",Intermediate,Varies,-,Free,https://learn.microsoft.com/en-us/training/browse/?terms=ASP.NET%20Core
+C015,Back End Development and APIs,freeCodeCamp,"Node.js, Node.js or Java, REST APIs, MongoDB, JSON, APIs",Intermediate,30 weeks,300,Free,https://www.freecodecamp.org/learn/back-end-development-and-apis/
+C016,Django for Everybody,Coursera,"Django, Python, Web Development, SQL, REST APIs",Intermediate,17 weeks,87,$49/month,https://www.coursera.org/specializations/django
+C017,Flask Web Development,Udemy,"Flask, Python, REST APIs, Web Development",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/flask/
+C018,API Design and Fundamentals of Google Cloud's Apigee,Coursera,"REST, APIs, API Gateway, OpenAPI/Swagger, OAuth 2.0",Intermediate,1 week,10,$49-$99,https://www.coursera.org/learn/api-design-apigee-gcp
+C019,GraphQL Topic Hub,Udemy,"GraphQL, APIs, Node.js, JSON",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/graphql/
+C020,Software Design and Architecture Specialization,Coursera,"System Design, OOP, Microservices, Design Patterns",Advanced,22 weeks,220,$49/month,https://www.coursera.org/specializations/software-design-architecture
+C021,Responsive Web Design,freeCodeCamp,"HTML5, CSS3, HTML/CSS, Responsive Design, Bootstrap",Beginner,30 weeks,300,Free,https://www.freecodecamp.org/learn/responsive-web-design/
+C022,Front End Development Libraries,freeCodeCamp,"React.js, Redux, jQuery, Bootstrap, JavaScript",Intermediate,30 weeks,300,Free,https://www.freecodecamp.org/learn/front-end-development-libraries/
+C023,Learn React (Official Tutorial),React.dev,"React.js, JavaScript, Component Design, Redux",Intermediate,Varies,-,Free,https://react.dev/learn
+C024,TypeScript Handbook,TypeScript Official,"TypeScript, JavaScript, Type Systems",Intermediate,Varies,-,Free,https://www.typescriptlang.org/docs/handbook/intro.html
+C025,Webpack Topic Hub,Udemy,"Webpack, JavaScript, Build Tooling, Front End Development",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/webpack/
+C026,Data Visualization with D3.js,freeCodeCamp,"Data Visualization, JavaScript, D3.js, JSON",Intermediate,30 weeks,300,Free,https://www.freecodecamp.org/learn/data-visualization/
+C027,PHP Topic Hub,Udemy,"PHP or Node.js, Web Development, MySQL",Beginner,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/php/
+C028,Intro to SQL,Kaggle Learn,"SQL, SQL Basics, Data Cleaning",Beginner,1 week,3,Free,https://www.kaggle.com/learn/intro-to-sql
+C029,Advanced SQL,Kaggle Learn,"SQL, Advanced SQL, Data Modeling, Analytics",Intermediate,1 week,4,Free,https://www.kaggle.com/learn/advanced-sql
+C030,Relational Database Certification,freeCodeCamp,"PostgreSQL, SQL, Git, Linux, Shell Scripting",Intermediate,30 weeks,300,Free,https://www.freecodecamp.org/learn/relational-database/
+C031,MySQL Topic Hub,Udemy,"MySQL, SQL, Database Design, Query Optimization",Beginner,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/mysql/
+C032,SQL Server Fundamentals,Microsoft Learn,"SQL Server, SQL, T-SQL, Data Modeling",Intermediate,Varies,-,Free,https://learn.microsoft.com/en-us/training/browse/?terms=SQL%20Server
+C033,MongoDB Basics,MongoDB University,"MongoDB, SQL/NoSQL, JSON, Data Modeling",Beginner,Varies,-,Free,https://learn.mongodb.com/
+C034,Redis University,Redis,"Redis, Caching, SQL/NoSQL, System Design",Intermediate,Varies,-,Free,https://redis.io/university/
+C035,Google Data Analytics Professional Certificate,Coursera,"SQL, Excel, Data Cleaning, Data Visualization, Statistics, Tableau",Beginner,26 weeks,260,$49/month,https://www.coursera.org/professional-certificates/google-data-analytics
+C036,Pandas,Kaggle Learn,"Pandas, Python, Python (Pandas), Data Cleaning",Beginner,1 week,4,Free,https://www.kaggle.com/learn/pandas
+C037,Data Cleaning,Kaggle Learn,"Data Cleaning, Pandas, Data Validation, Python",Intermediate,1 week,4,Free,https://www.kaggle.com/learn/data-cleaning
+C038,Data Visualization (Seaborn),Kaggle Learn,"Data Visualization, Python, Pandas, Descriptive Statistics",Beginner,1 week,4,Free,https://www.kaggle.com/learn/data-visualization
+C039,Data Analysis with Python,freeCodeCamp,"Python, Pandas, NumPy, Data Visualization, Statistics",Intermediate,30 weeks,300,Free,https://www.freecodecamp.org/learn/data-analysis-with-python/
+C040,Microsoft Power BI Data Analyst Certificate,Coursera,"Power BI, DAX, Data Modeling, Power BI or Tableau, Data Visualization",Beginner,22 weeks,220,$49/month,https://www.coursera.org/professional-certificates/microsoft-power-bi-data-analyst
+C041,Analyze Data with Power BI,Microsoft Learn,"Power BI, DAX, Data Modeling, Reporting Automation",Intermediate,Varies,-,Free,https://learn.microsoft.com/en-us/training/browse/?terms=Power%20BI
+C042,Tableau Business Intelligence Analyst Certificate,Coursera,"Tableau, Data Visualization, Business Acumen, SQL",Beginner,22 weeks,220,$49/month,https://www.coursera.org/professional-certificates/tableau-business-intelligence-analyst
+C043,Excel Skills for Business Specialization,Coursera,"Excel, Excel (Advanced), Excel (Pivot, VBA), Data Validation",Beginner,26 weeks,130,$49/month,https://www.coursera.org/specializations/excel
+C044,Statistics with Python Specialization,Coursera,"Statistics, Descriptive Statistics, Probability, Python",Intermediate,17 weeks,170,$49/month,https://www.coursera.org/specializations/statistics-with-python
+C045,IBM Data Engineering Professional Certificate,Coursera,"ETL, ETL Basics, ETL Concepts, Python, SQL, Data Warehousing, Airflow, Spark",Beginner,26 weeks,260,$49/month,https://www.coursera.org/professional-certificates/ibm-data-engineer
+C046,Apache Spark Official Documentation & Quick Start,Apache Spark,"Spark, Python, Data Modeling, ETL",Intermediate,Varies,-,Free,https://spark.apache.org/docs/latest/quick-start.html
+C047,Apache Airflow Tutorials,Apache Airflow,"Airflow, Python, ETL, Data Pipelines",Intermediate,Varies,-,Free,https://airflow.apache.org/docs/apache-airflow/stable/tutorial/index.html
+C048,Apache Kafka Documentation & Quickstart,Apache Kafka,"Kafka, Microservices, System Design, Streaming",Intermediate,Varies,-,Free,https://kafka.apache.org/quickstart
+C049,Data Warehousing for Business Intelligence,Coursera,"Data Warehousing, Star Schema, ETL, SQL, Data Modeling",Intermediate,22 weeks,220,$49/month,https://www.coursera.org/specializations/data-warehousing
+C050,SSIS and SSRS Topic Hub,Udemy,"SSIS, SSRS, SQL Server, ETL, Reporting Automation",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/ssis/
+C051,Intro to Machine Learning,Kaggle Learn,"Scikit-learn, Python, Pandas, Basic Deep Learning, Statistics",Beginner,1 week,3,Free,https://www.kaggle.com/learn/intro-to-machine-learning
+C052,Intermediate Machine Learning,Kaggle Learn,"Scikit-learn, Feature Engineering, Pandas, Python",Intermediate,1 week,4,Free,https://www.kaggle.com/learn/intermediate-machine-learning
+C053,Intro to Deep Learning,Kaggle Learn,"Basic Deep Learning, PyTorch or TensorFlow, Python",Intermediate,1 week,4,Free,https://www.kaggle.com/learn/intro-to-deep-learning
+C054,Machine Learning Specialization,Coursera,"Scikit-learn, Python, Statistics, Linear Algebra, Probability",Beginner,9 weeks,90,$49/month,https://www.coursera.org/specializations/machine-learning-introduction
+C055,Deep Learning Specialization,Coursera,"PyTorch, PyTorch or TensorFlow, Transformers, NLP, Basic Deep Learning",Intermediate,13 weeks,130,$49/month,https://www.coursera.org/specializations/deep-learning
+C056,Machine Learning with Python,freeCodeCamp,"Python, Scikit-learn, NLP, Basic Deep Learning, NumPy",Intermediate,30 weeks,300,Free,https://www.freecodecamp.org/learn/machine-learning-with-python/
+C057,Mathematics for Machine Learning Specialization,Coursera,"Linear Algebra, Probability, Statistics, Python",Intermediate,13 weeks,130,$49/month,https://www.coursera.org/specializations/mathematics-machine-learning
+C058,Machine Learning Engineering for Production (MLOps),Coursera,"MLOps, Docker, Kubernetes, Python, CI/CD, Model Deployment",Advanced,13 weeks,130,$49/month,https://www.coursera.org/specializations/machine-learning-engineering-for-production-mlops
+C059,Natural Language Processing Specialization,Coursera,"NLP, Transformers, BERT, Text Classification, NER, PyTorch",Advanced,13 weeks,130,$49/month,https://www.coursera.org/specializations/natural-language-processing
+C060,Hugging Face NLP Course,Hugging Face,"Hugging Face, Transformers, BERT, NLP, Fine-tuning, PyTorch",Intermediate,Varies,-,Free,https://huggingface.co/learn/nlp-course
+C061,spaCy Advanced NLP Course,spaCy,"spaCy, NLP, NER, Text Classification, Python",Intermediate,Varies,-,Free,https://course.spacy.io/en/
+C062,Generative AI with Large Language Models,Coursera,"LLMs, Prompt Engineering, Fine-tuning, Transformers, Python",Intermediate,2 weeks,16,$49-$99,https://www.coursera.org/learn/generative-ai-with-llms
+C063,LangChain and RAG Short Courses,DeepLearning.AI,"LangChain, RAG, LLMs, Vector Databases, Vector Databases (Pinecone/FAISS), Prompt Engineering",Intermediate,Varies,-,Free,https://www.deeplearning.ai/short-courses/
+C064,Azure AI Engineer Learning Paths,Microsoft Learn,"AWS/Azure AI, LLMs, Azure, Prompt Engineering, APIs",Intermediate,Varies,-,Free,https://learn.microsoft.com/en-us/training/browse/?terms=Azure%20AI
+C065,AWS Cloud Practitioner Essentials,AWS Skill Builder,"AWS, AWS Fundamentals, Cloud Fundamentals, IAM, EC2, S3",Beginner,1 week,7,Free,https://explore.skillbuilder.aws/learn/courses/134/aws-cloud-practitioner-essentials
+C066,AWS Fundamentals Specialization,Coursera,"AWS, AWS or Azure, AWS Lambda, S3, EC2, DynamoDB, IAM, CloudFormation",Beginner,13 weeks,130,$49/month,https://www.coursera.org/specializations/aws-fundamentals
+C067,Azure Fundamentals (AZ-900),Microsoft Learn,"Azure, AWS or Azure, Cloud Fundamentals, Entra ID, Networking",Beginner,Varies,-,Free,https://learn.microsoft.com/en-us/training/browse/?terms=AZ-900
+C068,Azure Administrator and Bicep Learning Paths,Microsoft Learn,"Azure, ARM/Bicep, PowerShell, Networking, Entra ID, IAM",Intermediate,Varies,-,Free,https://learn.microsoft.com/en-us/training/browse/?terms=Bicep
+C069,AWS Skill Builder Catalog,AWS Skill Builder,"AWS (S3, Glue, Redshift), Glue, Redshift, API Gateway, AWS Lambda",Intermediate,Varies,-,Free; optional $29/month subscription,https://explore.skillbuilder.aws/learn
+C070,Docker Get Started Guide,Docker Docs,"Docker, Docker Basics, Containers, Linux, YAML",Beginner,Varies,-,Free,https://docs.docker.com/get-started/
+C071,Kubernetes Official Tutorials,Kubernetes.io,"Kubernetes, Kubernetes (AKS), Docker, YAML, Linux",Intermediate,Varies,-,Free,https://kubernetes.io/docs/tutorials/
+C072,Terraform Tutorials,HashiCorp Developer,"Terraform, AWS/Azure, Cloud Fundamentals, YAML, IAM",Intermediate,Varies,-,Free,https://developer.hashicorp.com/terraform/tutorials
+C073,Google Cloud DevOps and SRE Specialization,Coursera,"CI/CD, SLO/SLI, Incident Response, Kubernetes, Prometheus",Advanced,17 weeks,170,$49/month,https://www.coursera.org/specializations/developing-apps-gke
+C074,Jenkins Topic Hub,Udemy,"Jenkins, Jenkins Basics, CI/CD, CI Integration, Git",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/jenkins/
+C075,Ansible Topic Hub,Udemy,"Ansible, YAML, Linux, Shell Scripting, Automation",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/ansible/
+C076,Azure DevOps Learning Paths,Microsoft Learn,"Azure DevOps, CI/CD, Git, Azure, YAML",Intermediate,Varies,-,Free,https://learn.microsoft.com/en-us/training/browse/?terms=Azure%20DevOps
+C077,Prometheus and Grafana Monitoring,Udemy,"Prometheus, Grafana, Kubernetes, Linux, Observability",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/prometheus/
+C078,Linux Command Line Basics and Administration,Udemy,"Linux, Linux Internals, Shell Scripting, Bash/Python, Scripting, Python/Bash, Python or Bash",Beginner,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/linux/
+C079,Learn Go (Official Tour),Go.dev,"Go or Python, Concurrency, System Design",Intermediate,Varies,-,Free,https://go.dev/tour/welcome/1
+C080,Software Testing and Automation Specialization,Coursera,"Manual Testing, Test Automation, Test Planning, SDLC/STLC, STLC, Embedded Testing Basics",Intermediate,17 weeks,170,$49/month,https://www.coursera.org/specializations/software-testing-automation
+C081,Quality Assurance Certification,freeCodeCamp,"Quality Assurance, Unit Testing, Node.js, Test Automation",Intermediate,30 weeks,300,Free,https://www.freecodecamp.org/learn/quality-assurance/
+C082,Selenium WebDriver Topic Hub,Udemy,"Selenium, Selenium WebDriver, Selenium Basics, TestNG, Java or Python, Python or Java, Test Automation",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/selenium-webdriver/
+C083,API Testing with Postman,Postman Learning Center,"Postman, API Testing (Postman), REST Assured, APIs, JSON",Beginner,Varies,-,Free,https://learning.postman.com/
+C084,Software Testing Fundamentals Topic Hub,Udemy,"Manual Testing, Manual Testing Concepts, Test Case Design, Test Case Writing, Regression Testing, Bug Reporting, Defect Management, UAT Support",Beginner,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/software-testing/
+C085,BDD with Cucumber,Udemy,"BDD/Cucumber, Test Automation, Java or Python, TestNG/PyTest",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/cucumber/
+C086,Agile with Atlassian Jira,Coursera,"JIRA, Agile, Bug Reporting, Defect Management, Ticketing Systems",Beginner,1 week,13,$49-$99,https://www.coursera.org/learn/agile-atlassian-jira
+C087,Google Cybersecurity Professional Certificate,Coursera,"Network Security, SIEM, Incident Response, Threat Detection, Linux, Python, Risk Assessment",Beginner,26 weeks,182,$49/month,https://www.coursera.org/professional-certificates/google-cybersecurity
+C088,Information Security Certification,freeCodeCamp,"Information Security, Network Security, Encryption, Python, Vulnerability Assessment",Intermediate,30 weeks,300,Free,https://www.freecodecamp.org/learn/information-security/
+C089,IBM Cybersecurity Analyst Professional Certificate,Coursera,"SIEM (Splunk/QRadar), Log Analysis, Incident Triage, Incident Response, Threat Detection, MITRE ATT&CK",Beginner,35 weeks,350,$49/month,https://www.coursera.org/professional-certificates/ibm-cybersecurity-analyst
+C090,Introduction to Cybersecurity,Cisco Networking Academy,"Network Security, Networking, Firewalls, Cyber Threats",Beginner,1 week,6,Free,https://www.netacad.com/courses/introduction-to-cybersecurity
+C091,Splunk Free Training,Splunk Education,"SIEM, SIEM (Splunk/QRadar), Log Analysis, Threat Detection",Intermediate,Varies,-,Free,https://www.splunk.com/en_us/training/free-courses/overview.html
+C092,ISO 27001 and Security Compliance Topic Hub,Udemy,"ISO 27001, Compliance (RBI/ISO 27001), Audit, Security Policy, Risk Assessment, DLP",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/iso-27001/
+C093,Vulnerability Assessment with Nessus and OpenVAS,Udemy,"Vulnerability Assessment, Nessus, Network Security, Penetration Testing",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/vulnerability-assessment/
+C094,Google IT Support Professional Certificate,Coursera,"Windows/Linux Administration, Networking, Troubleshooting, Active Directory, Hardware Troubleshooting, Customer Communication",Beginner,26 weeks,260,$49/month,https://www.coursera.org/professional-certificates/google-it-support
+C095,Networking Essentials,Cisco Networking Academy,"Networking, Networking (TCP/IP, DNS), Networking Basics, DNS, Firewalls",Beginner,7 weeks,70,Free,https://www.netacad.com/courses/networking-essentials
+C096,ServiceNow Learning Paths,ServiceNow Learning,"Ticketing (ServiceNow), Ticketing Systems, Troubleshooting, Documentation, Product Knowledge",Beginner,Varies,-,Free,https://nowlearning.servicenow.com/
+C097,Windows Server and Active Directory Learning Paths,Microsoft Learn,"Active Directory, Windows/Linux Administration, PowerShell, IAM, Entra ID",Intermediate,Varies,-,Free,https://learn.microsoft.com/en-us/training/browse/?terms=Active%20Directory
+C098,Agile Development Specialization,Coursera,"Agile, SDLC/STLC, Requirement Gathering, Documentation",Beginner,17 weeks,170,$49/month,https://www.coursera.org/specializations/agile-development
+C099,Business Analysis and Requirements Topic Hub,Udemy,"Requirement Gathering, Solution Design, Business Acumen, Client Communication, Documentation, Integration",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/business-analysis/
+C100,Oracle and SAP ERP/CRM Topic Hub,Udemy,"ERP/CRM Modules, Solution Design, Integration, Client Communication",Intermediate,Varies,-,"Varies (paid, per course)",https://www.udemy.com/topic/sap/

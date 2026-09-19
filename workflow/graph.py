@@ -1,7 +1,6 @@
 from typing import TypedDict
 
 from agents.career_pipeline import run_career_analysis
-from agents.course_recommender import recommend_courses
 
 from langgraph.graph import StateGraph, START, END
 
@@ -10,13 +9,21 @@ class CareerState(TypedDict):
     profile_text: str
     profile: dict
     jobs: list
-    courses: list
+    priority_skills: list
+    training_path: list
 
 
 def analyze_career(state: CareerState):
     """
-    Run the existing profile parsing,
-    job matching and skill-gap analysis.
+    Run the complete career analysis pipeline.
+
+    This includes:
+    - Profile parsing
+    - Location-based job matching
+    - Skill-gap analysis
+    - Course recommendations
+    - Opportunity ranking
+    - Training path
     """
 
     result = run_career_analysis(
@@ -25,54 +32,23 @@ def analyze_career(state: CareerState):
 
     return {
         "profile": result["profile"],
-        "jobs": result["jobs"]
-    }
-
-
-def recommend_training(state: CareerState):
-    """
-    Collect missing skills from the matched jobs
-    and recommend relevant courses.
-    """
-
-    all_missing_skills = []
-
-    for job in state["jobs"]:
-        all_missing_skills.extend(
-            job.get("missing_skills", [])
-        )
-
-    # Remove duplicate skills
-    missing_skills = list(
-        dict.fromkeys(all_missing_skills)
-    )
-
-    courses = recommend_courses(
-        missing_skills,
-        top_k=5
-    )
-
-    return {
-        "courses": courses
+        "jobs": result["jobs"],
+        "priority_skills": result["priority_skills"],
+        "training_path": result["training_path"]
     }
 
 
 def build_graph():
     """
-    Build the complete Career Agent LangGraph workflow.
+    Build the Career Agent LangGraph workflow.
     """
 
     graph = StateGraph(CareerState)
 
-    # Nodes
+    # Career analysis node
     graph.add_node(
         "career_analysis",
         analyze_career
-    )
-
-    graph.add_node(
-        "training_recommendation",
-        recommend_training
     )
 
     # Workflow
@@ -83,11 +59,6 @@ def build_graph():
 
     graph.add_edge(
         "career_analysis",
-        "training_recommendation"
-    )
-
-    graph.add_edge(
-        "training_recommendation",
         END
     )
 
@@ -109,29 +80,65 @@ if __name__ == "__main__":
         "profile_text": test_profile,
         "profile": {},
         "jobs": [],
-        "courses": []
+        "priority_skills": [],
+        "training_path": []
     })
 
-    print("\nPROFILE")
-    print("-------")
+    print("\n====================")
+    print("PROFILE")
+    print("====================")
     print(result["profile"])
 
-    print("\nJOB RECOMMENDATIONS")
-    print("-------------------")
+    print("\n====================")
+    print("PRIORITY SKILLS")
+    print("====================")
+
+    for item in result["priority_skills"][:10]:
+
+        print(
+            item["skill"],
+            "->",
+            item["job_count"],
+            "jobs"
+        )
+
+    print("\n====================")
+    print("TRAINING PATH")
+    print("====================")
+
+    for item in result["training_path"]:
+
+        print(
+            f"Step {item['step']}: "
+            f"{item['skill']} -> "
+            f"{item['course_name']} "
+            f"({item['jobs_unlocked']} jobs)"
+        )
+
+    print("\n====================")
+    print("JOB RECOMMENDATIONS")
+    print("====================")
 
     for job in result["jobs"]:
+
         print("\nJob:", job["job_title"])
         print("Company:", job["company"])
         print("Location:", job["location"])
         print("Match:", job["match_score"])
+        print("Matched:", job["matched_skills"])
         print("Missing:", job["missing_skills"])
+        print("Gap:", job["gap_percentage"], "%")
 
-    print("\nCOURSE RECOMMENDATIONS")
-    print("----------------------")
+        print("Courses:")
 
-    for course in result["courses"]:
-        print("\nCourse:", course["course_name"])
-        print("Platform:", course["platform"])
-        print("Skills:", course["skills"])
-        print("Duration:", course["duration"])
-        print("URL:", course["url"])
+        for course in job["recommended_courses"][:5]:
+
+            print(
+                "  -",
+                course["course_name"],
+                "|",
+                course["platform"],
+                "|",
+                course["opportunity_score"],
+                "jobs"
+            )

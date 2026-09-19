@@ -2,13 +2,16 @@
 # SKILL GAP ANALYZER
 # ============================================================
 
+import re
 
-def clean_skill(skill):
+
+def normalize_skill(skill):
+    """Normalize skill names for reliable matching."""
 
     if skill is None:
         return ""
 
-    skill = str(skill).strip().lower()
+    skill = str(skill).lower().strip()
 
     # Remove list-like brackets and quotes
     skill = skill.replace("[", "")
@@ -16,18 +19,50 @@ def clean_skill(skill):
     skill = skill.replace("'", "")
     skill = skill.replace('"', "")
 
-    return skill.strip()
+    replacements = {
+        "ml": "machine learning",
+        "machine-learning": "machine learning",
+        "powerbi": "power bi",
+        "nodejs": "node.js",
+        "node": "node.js",
+        "js": "javascript",
+        "py": "python",
+        "python3": "python",
+        "pandas library": "pandas",
+        "numpy library": "numpy",
+        "scikit learn": "scikit-learn",
+        "sklearn": "scikit-learn",
+        "pytorch or tensorflow": "deep learning",
+        "basic deep learning": "deep learning",
+        "vector databases": "vector database",
+        "vector databases (pinecone/faiss)": "vector database",
+        "sql database": "sql",
+        "mysql database": "mysql",
+        "postgres": "postgresql",
+        "postgres sql": "postgresql",
+    }
+
+    skill = skill.strip()
+
+    return replacements.get(skill, skill)
+
+
+def clean_skill(skill):
+    """Clean an individual skill."""
+
+    if skill is None:
+        return ""
+
+    return normalize_skill(skill)
 
 
 def flatten_skills(skills):
+    """Convert different skill formats into a clean list."""
 
     if skills is None:
         return []
 
-    # --------------------------------------------------------
-    # If already a list
-    # --------------------------------------------------------
-
+    # Already a list
     if isinstance(skills, list):
 
         result = []
@@ -36,13 +71,9 @@ def flatten_skills(skills):
 
             # Nested list
             if isinstance(skill, list):
-
-                result.extend(
-                    flatten_skills(skill)
-                )
+                result.extend(flatten_skills(skill))
 
             else:
-
                 cleaned = clean_skill(skill)
 
                 if cleaned:
@@ -50,22 +81,11 @@ def flatten_skills(skills):
 
         return result
 
-
-    # --------------------------------------------------------
-    # If string
-    # --------------------------------------------------------
-
+    # String
     if isinstance(skills, str):
 
-        # Handle strings such as:
-        # "Python, SQL, Pandas"
-
-        skills = skills.replace(
-            ";",
-            ","
-        )
-
-        parts = skills.split(",")
+        # Handle comma / semicolon / pipe separated skills
+        parts = re.split(r"[,;|\n]+", skills)
 
         result = []
 
@@ -78,67 +98,35 @@ def flatten_skills(skills):
 
         return result
 
-
     return []
 
 
+def split_skills(skill_text):
+    """Split a skill string into individual skills."""
+
+    if not skill_text:
+        return []
+
+    return flatten_skills(skill_text)
+
+
 def normalize_for_matching(skill):
+    """Normalize skill for comparison."""
 
-    skill = clean_skill(skill)
-
-    # Common equivalent names
-    aliases = {
-
-        "py": "python",
-
-        "python3": "python",
-
-        "pandas library": "pandas",
-
-        "numpy library": "numpy",
-
-        "scikit learn": "scikit-learn",
-
-        "sklearn": "scikit-learn",
-
-        "js": "javascript",
-
-        "node": "node.js",
-
-        "nodejs": "node.js",
-
-        "sql database": "sql",
-
-        "mysql database": "mysql",
-
-        "postgres": "postgresql",
-
-        "postgres sql": "postgresql"
-    }
-
-    return aliases.get(
-        skill,
-        skill
-    )
+    return normalize_skill(skill)
 
 
 def analyze_gap(
     user_skills,
     required_skills
 ):
-
     # ========================================================
     # PREPARE SKILLS
     # ========================================================
 
-    user_list = flatten_skills(
-        user_skills
-    )
+    user_list = flatten_skills(user_skills)
 
-    required_list = flatten_skills(
-        required_skills
-    )
-
+    required_list = flatten_skills(required_skills)
 
     # ========================================================
     # NORMALIZE
@@ -150,13 +138,6 @@ def analyze_gap(
         if skill
     }
 
-    required_normalized = {
-        normalize_for_matching(skill)
-        for skill in required_list
-        if skill
-    }
-
-
     # ========================================================
     # MATCH SKILLS
     # ========================================================
@@ -164,7 +145,6 @@ def analyze_gap(
     matched_skills = []
 
     missing_skills = []
-
 
     for original_skill in required_list:
 
@@ -174,7 +154,6 @@ def analyze_gap(
 
         if not normalized:
             continue
-
 
         # ----------------------------------------------------
         # Exact match
@@ -188,13 +167,8 @@ def analyze_gap(
 
             continue
 
-
         # ----------------------------------------------------
         # Partial / related match
-        #
-        # Example:
-        # user = "machine learning"
-        # required = "machine learning algorithms"
         # ----------------------------------------------------
 
         partial_match = False
@@ -210,7 +184,6 @@ def analyze_gap(
 
                 break
 
-
         if partial_match:
 
             matched_skills.append(
@@ -222,7 +195,6 @@ def analyze_gap(
             missing_skills.append(
                 original_skill
             )
-
 
     # ========================================================
     # REMOVE DUPLICATES
@@ -240,17 +212,14 @@ def analyze_gap(
         )
     )
 
-
     # ========================================================
     # GAP PERCENTAGE
     # ========================================================
 
-    total_required = len(
-        matched_skills
-    ) + len(
-        missing_skills
+    total_required = (
+        len(matched_skills)
+        + len(missing_skills)
     )
-
 
     if total_required == 0:
 
@@ -260,26 +229,18 @@ def analyze_gap(
 
         gap_percentage = (
             len(missing_skills)
-            /
-            total_required
+            / total_required
         ) * 100
-
 
     # ========================================================
     # RETURN
     # ========================================================
 
     return {
-
-        "matched_skills":
-            matched_skills,
-
-        "missing_skills":
-            missing_skills,
-
-        "gap_percentage":
-            round(
-                gap_percentage,
-                1
-            )
+        "matched_skills": matched_skills,
+        "missing_skills": missing_skills,
+        "gap_percentage": round(
+            gap_percentage,
+            1
+        )
     }

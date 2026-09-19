@@ -1,6 +1,5 @@
 import streamlit as st
 
-
 st.set_page_config(
     page_title="Career Compass",
     page_icon="🧭",
@@ -8,45 +7,35 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+st.markdown("""
+<style>
+.stApp {
+    background: #F7F9FC;
+}
 
-# ============================================================
-# GLOBAL STYLE
-# ============================================================
+[data-testid="stSidebar"] {
+    display: none;
+}
 
-st.markdown(
-    """
-    <style>
+#MainMenu {
+    visibility: hidden;
+}
 
-    .stApp {
-        background: #F7F9FC;
-    }
+footer {
+    visibility: hidden;
+}
 
-    [data-testid="stSidebar"] {
-        display: none;
-    }
+header {
+    background: transparent !important;
+}
 
-    #MainMenu {
-        visibility: hidden;
-    }
-
-    footer {
-        visibility: hidden;
-    }
-
-    header {
-        background: transparent !important;
-    }
-
-    .main .block-container {
-        max-width: 1200px;
-        padding-top: 0.5rem;
-        padding-bottom: 3rem;
-    }
-
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+.main .block-container {
+    max-width: 1200px;
+    padding-top: 0.5rem;
+    padding-bottom: 3rem;
+}
+</style>
+""", unsafe_allow_html=True)
 
 
 # ============================================================
