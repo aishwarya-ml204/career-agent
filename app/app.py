@@ -1,5 +1,6 @@
 import streamlit as st
 
+
 st.set_page_config(
     page_title="Career Compass",
     page_icon="🧭",
@@ -7,40 +8,40 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-st.markdown("""
-<style>
-.stApp {
-    background: #F7F9FC;
-}
 
-[data-testid="stSidebar"] {
-    display: none;
-}
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background: #F7F9FC;
+    }
 
-#MainMenu {
-    visibility: hidden;
-}
+    [data-testid="stSidebar"] {
+        display: none;
+    }
 
-footer {
-    visibility: hidden;
-}
+    #MainMenu {
+        visibility: hidden;
+    }
 
-header {
-    background: transparent !important;
-}
+    footer {
+        visibility: hidden;
+    }
 
-.main .block-container {
-    max-width: 1200px;
-    padding-top: 0.5rem;
-    padding-bottom: 3rem;
-}
-</style>
-""", unsafe_allow_html=True)
+    header {
+        background: transparent !important;
+    }
 
+    .main .block-container {
+        max-width: 1200px;
+        padding-top: 0.5rem;
+        padding-bottom: 3rem;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-# ============================================================
-# PAGES
-# ============================================================
 
 home = st.Page(
     "pages/home.py",
@@ -85,10 +86,6 @@ learning = st.Page(
 )
 
 
-# ============================================================
-# NAVIGATION
-# ============================================================
-
 pg = st.navigation(
     [
         home,
@@ -101,5 +98,6 @@ pg = st.navigation(
     ],
     position="hidden"
 )
+
 
 pg.run()
