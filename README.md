@@ -1,4 +1,9 @@
 # 🧭 Career Compass
+# Career Compass
+
+🚀 **Live Demo:** [Launch Career Compass](https://career-agent-nbmwckpudczf7goklyslhv.streamlit.app/)
+
+AI-powered career guidance, skill gap analysis, and job matching.
 
 ### AI-Based Career Guidance and Skill Gap Analysis Agent
 
