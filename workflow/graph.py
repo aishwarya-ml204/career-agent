@@ -56,22 +56,77 @@ def job_matching_node(state):
 
     profile = state["profile"]
 
-    jobs_df = match_jobs(
+    matched_jobs = match_jobs(
         profile.get("skills", []),
         location=profile.get("location"),
         top_k=5
     )
 
-    jobs = jobs_df.to_dict(
-        orient="records"
-    )
+    # Current job_matcher.py returns a list.
+    # Keep compatibility if it ever returns a DataFrame.
+    if isinstance(matched_jobs, pd.DataFrame):
+
+        jobs = matched_jobs.to_dict(
+            orient="records"
+        )
+
+    else:
+
+        jobs = matched_jobs or []
+
+    # Add the original CSV-style field names
+    # required by the existing LangGraph nodes.
+    normalized_jobs = []
+
+    for job in jobs:
+
+        normalized_job = dict(job)
+
+        normalized_job["JOB_ID"] = job.get(
+            "JOB_ID",
+            job.get("job_id", "")
+        )
+
+        normalized_job["JOB_TITLE"] = job.get(
+            "JOB_TITLE",
+            job.get("job_title", "")
+        )
+
+        normalized_job["COMPANY"] = job.get(
+            "COMPANY",
+            job.get("company", "")
+        )
+
+        normalized_job["LOCATION"] = job.get(
+            "LOCATION",
+            job.get("location", "")
+        )
+
+        normalized_job["REQUIRED_SKILLS"] = job.get(
+            "REQUIRED_SKILLS",
+            job.get("required_skills", "")
+        )
+
+        normalized_job["JOB_DESCRIPTION"] = job.get(
+            "JOB_DESCRIPTION",
+            job.get("job_description", "")
+        )
+
+        normalized_job["SOURCE_URL"] = job.get(
+            "SOURCE_URL",
+            job.get("source_url", "")
+        )
+
+        normalized_jobs.append(
+            normalized_job
+        )
 
     print(
-        f"[2] Jobs matched: {len(jobs)}"
+        f"[2] Jobs matched: {len(normalized_jobs)}"
     )
 
     return {
-        "jobs": jobs
+        "jobs": normalized_jobs
     }
 
 
