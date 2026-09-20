@@ -62,9 +62,15 @@ def job_matching_node(state):
         top_k=5
     )
 
-    jobs = jobs_df.to_dict(
-        orient="records"
-    )
+    # Support both DataFrames and lists
+    if hasattr(jobs_df, "to_dict"):
+        jobs = jobs_df.to_dict(orient="records")
+    elif isinstance(jobs_df, list):
+        jobs = jobs_df
+    else:
+        raise TypeError(
+            f"Unexpected jobs data type: {type(jobs_df)}"
+        )
 
     print(
         f"[2] Jobs matched: {len(jobs)}"
@@ -74,11 +80,9 @@ def job_matching_node(state):
         "jobs": jobs
     }
 
-
 # -----------------------------
 # 3. GAP ANALYSIS
 # -----------------------------
-
 def gap_analysis_node(state):
 
     profile = state["profile"]
@@ -92,45 +96,96 @@ def gap_analysis_node(state):
 
     for job in state.get("jobs", []):
 
+        # Support uppercase and lowercase field names
+        required_skills = (
+            job.get("REQUIRED_SKILLS")
+            or job.get("required_skills")
+            or job.get("Required Skills")
+            or job.get("skills")
+            or job.get("Skills")
+            or []
+        )
+
+        # Convert comma-separated skills into a list
+        if isinstance(required_skills, str):
+            required_skills = [
+                skill.strip()
+                for skill in required_skills.split(",")
+                if skill.strip()
+            ]
+
+        job_id = (
+            job.get("JOB_ID")
+            or job.get("job_id")
+            or job.get("Job ID")
+            or ""
+        )
+
+        job_title = (
+            job.get("JOB_TITLE")
+            or job.get("job_title")
+            or job.get("Job")
+            or job.get("Title")
+            or ""
+        )
+
+        company = (
+            job.get("COMPANY")
+            or job.get("company")
+            or job.get("Company")
+            or ""
+        )
+
+        location = (
+            job.get("LOCATION")
+            or job.get("location")
+            or job.get("Location")
+            or ""
+        )
+
+        match_score = job.get(
+            "match_score",
+            job.get("MATCH_SCORE", 0)
+        )
+
         gap = analyze_gap(
             user_skills,
-            job["REQUIRED_SKILLS"]
+            required_skills
         )
 
         analyzed_jobs.append({
-    # Keep original CSV column names
-    # These are used by the ranking logic
-    "JOB_ID": job["JOB_ID"],
-    "JOB_TITLE": job["JOB_TITLE"],
-    "COMPANY": job["COMPANY"],
-    "LOCATION": job["LOCATION"],
-    "REQUIRED_SKILLS": job["REQUIRED_SKILLS"],
 
-    # Lowercase fields used by Streamlit UI
-    "job_id": job["JOB_ID"],
-    "job_title": job["JOB_TITLE"],
-    "company": job["COMPANY"],
-    "location": job["LOCATION"],
-    "required_skills": job["REQUIRED_SKILLS"],
+            # Original-style fields
+            "JOB_ID": job_id,
+            "JOB_TITLE": job_title,
+            "COMPANY": company,
+            "LOCATION": location,
+            "REQUIRED_SKILLS": required_skills,
 
-    # Matching score
-    "match_score": round(
-        float(job["match_score"]),
-        3
-    ),
+            # Lowercase fields for Streamlit UI
+            "job_id": job_id,
+            "job_title": job_title,
+            "company": company,
+            "location": location,
+            "required_skills": required_skills,
 
-    # Gap analysis
-    "matched_skills": gap["matched_skills"],
-    "missing_skills": gap["missing_skills"],
-    "gap_percentage": gap["gap_percentage"]
-})
+            # Matching score
+            "match_score": round(
+                float(match_score or 0),
+                3
+            ),
+
+            # Gap analysis
+            "matched_skills": gap["matched_skills"],
+            "missing_skills": gap["missing_skills"],
+            "gap_percentage": gap["gap_percentage"]
+        })
 
     print("[3] Gap analysis complete")
 
     return {
         "jobs": analyzed_jobs
     }
-
 
 # -----------------------------
 # 4. OPPORTUNITY RANKING
@@ -428,10 +483,14 @@ def training_path_node(state):
         []
     )
 
+    print("[DEBUG] Priority skills:", priority_skills)
+
     training_path = build_training_path(
         priority_skills,
         max_steps=5
     )
+
+    print("[DEBUG] Generated training path:", training_path)
 
     total_hours = 0
     all_free = True
@@ -445,7 +504,7 @@ def training_path_node(state):
                     0
                 )
             )
-        except:
+        except (TypeError, ValueError):
             pass
 
         cost = str(
@@ -462,7 +521,6 @@ def training_path_node(state):
             "$0",
             "₹0"
         ]:
-
             all_free = False
 
     print("[7] Training path created")
@@ -474,7 +532,6 @@ def training_path_node(state):
             "all_free": all_free
         }
     }
-
 
 # -----------------------------
 # BUILD GRAPH

@@ -1,38 +1,15 @@
 import streamlit as st
 import io
-import math
-import re
 from pypdf import PdfReader
 from docx import Document
 import sys
 from pathlib import Path
-
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 from workflow.graph import build_graph
-
-def is_free_course(cost):
-    """Return True if the course is free."""
-    if cost is None:
-        return False
-
-    if isinstance(cost, (int, float)):
-        return cost == 0
-
-    cost_text = str(cost).strip().lower()
-
-    free_values = {
-        "free",
-        "$0",
-        "0",
-        "0.00",
-        "free course",
-    }
-
-    return cost_text in free_values or "free" in cost_text
 
 def extract_text_from_resume(uploaded_file):
     """
@@ -81,325 +58,35 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ============================================================
-# 🎨 MODERN UI STYLING
-# ============================================================
+st.markdown("""
+<style>
+.stApp {
+    background: #F7F9FC;
+}
 
-st.markdown(
-    """
-    <style>
+[data-testid="stSidebar"] {
+    display: none;
+}
 
-    /* --------------------------------------------------------
-       Main Application Background
-    -------------------------------------------------------- */
+#MainMenu {
+    visibility: hidden;
+}
 
-    .stApp {
-        background: linear-gradient(
-            135deg,
-            #F5F7FF 0%,
-            #EEF7FF 50%,
-            #F8F5FF 100%
-        );
-        color: #1F2937;
-    }
+footer {
+    visibility: hidden;
+}
 
-    .main .block-container {
-        max-width: 1250px;
-        padding-top: 1.5rem;
-        padding-bottom: 4rem;
-        padding-left: 2rem;
-        padding-right: 2rem;
-    }
+header {
+    background: transparent !important;
+}
 
-    /* --------------------------------------------------------
-       Hide Default Streamlit Elements
-    -------------------------------------------------------- */
-
-    [data-testid="stSidebar"] {
-        display: none;
-    }
-
-    #MainMenu {
-        visibility: hidden;
-    }
-
-    footer {
-        visibility: hidden;
-    }
-
-    header {
-        background: transparent !important;
-    }
-
-    /* --------------------------------------------------------
-       Main Headings
-    -------------------------------------------------------- */
-
-    h1 {
-        color: #312E81 !important;
-        font-weight: 800 !important;
-        letter-spacing: -0.8px;
-    }
-
-    h2 {
-        color: #3730A3 !important;
-        font-weight: 750 !important;
-    }
-
-    h3 {
-        color: #4338CA !important;
-        font-weight: 700 !important;
-    }
-
-    /* --------------------------------------------------------
-       App Header
-    -------------------------------------------------------- */
-
-    .app-title {
-        background: linear-gradient(
-            135deg,
-            #4F46E5,
-            #7C3AED,
-            #2563EB
-        );
-        padding: 2rem;
-        border-radius: 24px;
-        color: white;
-        text-align: center;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 30px rgba(79, 70, 229, 0.20);
-    }
-
-    .app-title h1 {
-        color: white !important;
-        font-size: 2.4rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .app-title p {
-        color: #E0E7FF;
-        font-size: 1.05rem;
-        margin-bottom: 0;
-    }
-
-    /* --------------------------------------------------------
-       Section Containers
-    -------------------------------------------------------- */
-
-    [data-testid="stVerticalBlockBorderWrapper"] {
-        background: rgba(255, 255, 255, 0.90);
-        border: 1px solid #E0E7FF;
-        border-radius: 18px;
-        padding: 1rem;
-        box-shadow: 0 5px 18px rgba(79, 70, 229, 0.07);
-    }
-
-    /* --------------------------------------------------------
-       Buttons
-    -------------------------------------------------------- */
-
-    .stButton > button {
-        background: linear-gradient(
-            135deg,
-            #4F46E5,
-            #7C3AED
-        );
-        color: white !important;
-        border: none;
-        border-radius: 14px;
-        padding: 0.75rem 1.2rem;
-        font-size: 1rem;
-        font-weight: 700;
-        transition: all 0.2s ease-in-out;
-        box-shadow: 0 5px 14px rgba(79, 70, 229, 0.20);
-    }
-
-    .stButton > button:hover {
-        background: linear-gradient(
-            135deg,
-            #3730A3,
-            #6D28D9
-        );
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.30);
-    }
-
-    .stButton > button:active {
-        transform: translateY(0);
-    }
-
-    /* --------------------------------------------------------
-       Text Inputs
-    -------------------------------------------------------- */
-
-    .stTextInput input,
-    .stNumberInput input {
-        background-color: white !important;
-        border: 2px solid #DDE3F5 !important;
-        border-radius: 12px !important;
-        padding: 0.75rem !important;
-        color: #1F2937 !important;
-    }
-
-    .stTextInput input:focus,
-    .stNumberInput input:focus {
-        border-color: #6366F1 !important;
-        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15) !important;
-    }
-
-    /* --------------------------------------------------------
-       File Uploader
-    -------------------------------------------------------- */
-
-    [data-testid="stFileUploader"] {
-        background: white;
-        border: 2px dashed #A5B4FC;
-        border-radius: 16px;
-        padding: 1rem;
-        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.08);
-    }
-
-    /* --------------------------------------------------------
-       Checkbox
-    -------------------------------------------------------- */
-
-    [data-testid="stCheckbox"] {
-        background: #EEF2FF;
-        border-radius: 12px;
-        padding: 0.5rem;
-    }
-
-    /* --------------------------------------------------------
-       Metrics
-    -------------------------------------------------------- */
-
-    [data-testid="stMetric"] {
-        background: linear-gradient(
-            135deg,
-            #FFFFFF,
-            #F0F4FF
-        );
-        border: 1px solid #DDE3F5;
-        border-radius: 16px;
-        padding: 1rem;
-        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.08);
-    }
-
-    [data-testid="stMetricLabel"] {
-        color: #6366F1 !important;
-        font-weight: 700 !important;
-    }
-
-    [data-testid="stMetricValue"] {
-        color: #312E81 !important;
-        font-weight: 800 !important;
-    }
-
-    /* --------------------------------------------------------
-       Alerts and Messages
-    -------------------------------------------------------- */
-
-    [data-testid="stAlert"] {
-        border-radius: 14px;
-        border-left: 5px solid #6366F1;
-    }
-
-    /* --------------------------------------------------------
-       Progress and Dividers
-    -------------------------------------------------------- */
-
-    hr {
-        border: none;
-        height: 2px;
-        background: linear-gradient(
-            90deg,
-            #C7D2FE,
-            #DDD6FE,
-            #BFDBFE
-        );
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-    }
-
-    /* --------------------------------------------------------
-       Links
-    -------------------------------------------------------- */
-
-    a {
-        color: #4F46E5 !important;
-        font-weight: 600;
-    }
-
-    /* --------------------------------------------------------
-       Course Links
-    -------------------------------------------------------- */
-
-    .stLinkButton > a {
-        background: #EEF2FF !important;
-        color: #4338CA !important;
-        border: 1px solid #C7D2FE !important;
-        border-radius: 10px !important;
-        font-weight: 700 !important;
-    }
-
-    .stLinkButton > a:hover {
-        background: #E0E7FF !important;
-        border-color: #818CF8 !important;
-    }
-
-    /* --------------------------------------------------------
-       Captions
-    -------------------------------------------------------- */
-
-    .stCaption {
-        color: #64748B !important;
-        font-size: 0.9rem;
-    }
-
-    /* --------------------------------------------------------
-       Responsive Design
-    -------------------------------------------------------- */
-
-    @media (max-width: 768px) {
-
-        .main .block-container {
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-
-        .app-title {
-            padding: 1.5rem;
-            border-radius: 18px;
-        }
-
-        .app-title h1 {
-            font-size: 1.8rem;
-        }
-
-    }
-
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-# ============================================================
-# 🌟 APPLICATION HEADER
-# ============================================================
-
-st.markdown(
-    """
-    <div class="app-title">
-        <h1>🧭 Career Compass</h1>
-        <p>
-            Discover your career path, identify skill gaps,
-            and build your personalized learning journey.
-        </p>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
-
+.main .block-container {
+    max-width: 1200px;
+    padding-top: 0.5rem;
+    padding-bottom: 3rem;
+}
+</style>
+""", unsafe_allow_html=True)
 
 
 # ============================================================
@@ -409,44 +96,45 @@ st.markdown(
 home = st.Page(
     "pages/home.py",
     title="Dashboard",
-    icon=":material/home:"
+    icon="🏠"
 )
 
 profile = st.Page(
     "pages/profile.py",
     title="Profile",
-    icon=":material/person:"
+    icon="👤"
 )
 
 analysis = st.Page(
     "pages/analysis.py",
     title="AI Analysis",
-    icon=":material/psychology:"
+    icon="🤖"
 )
 
 jobs = st.Page(
     "pages/jobs.py",
     title="Jobs",
-    icon=":material/work:"
+    icon="💼"
 )
 
 job_details = st.Page(
     "pages/job_details.py",
     title="Job Details",
-    icon=":material/description:"
+    icon="📄"
 )
 
 skill_gaps = st.Page(
     "pages/skill_gaps.py",
     title="Skill Gaps",
-    icon=":material/target:"
+    icon="🎯"
 )
 
 learning = st.Page(
     "pages/learning_path.py",
     title="Learning Path",
-    icon=":material/school:"
+    icon="📚"
 )
+
 
 # ============================================================
 # NAVIGATION
@@ -613,7 +301,21 @@ Career Interests:
                     }
                 )
 
-                
+                st.write(
+                    "DEBUG - Result keys:",
+                    list(result.keys())
+                )
+
+                st.write(
+                    "DEBUG - Training path:",
+                    result.get("training_path")
+                )
+
+                st.write(
+                    "DEBUG - Training summary:",
+                    result.get("training_summary")
+                )
+
                 training_path = result.get("training_path", [])
                 st.subheader("🛣️ Personalized Training Path")
 
@@ -1065,7 +767,8 @@ Career Interests:
                             st.success(
                                 "No major skill gaps identified."
                             )
-                                                    # ------------------------------------------
+
+                        # ------------------------------------------
                         # Job-specific courses
                         # ------------------------------------------
 
@@ -1082,7 +785,6 @@ Career Interests:
 
                             displayed_courses = []
 
-                            # Apply free-course filter
                             for course in courses:
 
                                 if (
@@ -1091,84 +793,12 @@ Career Interests:
                                         course.get("cost")
                                     )
                                 ):
-                                    continue
-
-                                displayed_courses.append(course)
-
-                            # ------------------------------------------
-                            # Time-to-Ready Estimation
-                            # ------------------------------------------
-
-                            total_hours = 0.0
-
-                            for course in displayed_courses:
-
-                                hours = course.get(
-                                    "duration_hours",
-                                    0
-                                )
-
-                                try:
-
-                                    if isinstance(
-                                        hours,
-                                        (int, float)
-                                    ):
-
-                                        total_hours += float(hours)
-
-                                    else:
-
-                                        match = re.search(
-                                            r"\d+(\.\d+)?",
-                                            str(hours)
-                                        )
-
-                                        if match:
-
-                                            total_hours += float(
-                                                match.group()
-                                            )
-
-                                except (
-                                    ValueError,
-                                    TypeError
-                                ):
 
                                     continue
 
-                            if (
-                                total_hours > 0
-                                and weekly_hours > 0
-                            ):
-
-                                estimated_weeks = math.ceil(
-                                    total_hours / weekly_hours
+                                displayed_courses.append(
+                                    course
                                 )
-
-                                st.markdown(
-                                    "### ⏱️ Time-to-Ready Estimation"
-                                )
-
-                                estimate_col1, estimate_col2 = st.columns(2)
-
-                                with estimate_col1:
-
-                                    st.metric(
-                                        "Estimated Learning Time",
-                                        f"{estimated_weeks} weeks"
-                                    )
-
-                                with estimate_col2:
-
-                                    st.metric(
-                                        "Total Course Hours",
-                                        f"{total_hours:g} hours"
-                                    )
-
-                            # ------------------------------------------
-                            # Display Course Information
-                            # ------------------------------------------
 
                             if not displayed_courses:
 
@@ -1218,25 +848,21 @@ Career Interests:
                                     course_col1, course_col2, course_col3, course_col4 = st.columns(4)
 
                                     with course_col1:
-
                                         st.write(
                                             f"🏫 {platform}"
                                         )
 
                                     with course_col2:
-
                                         st.write(
                                             f"⏱️ {duration}"
                                         )
 
                                     with course_col3:
-
                                         st.write(
                                             f"📚 {duration_hours} hours"
                                         )
 
                                     with course_col4:
-
                                         st.write(
                                             f"💰 {cost}"
                                         )
@@ -1258,6 +884,166 @@ Career Interests:
                                         )
 
                                     st.write("")
+
+
+            # --------------------------------------------------
+            # Personalized Training Path
+            # --------------------------------------------------
+
+            st.divider()
+
+            st.header(
+                "🛣️ Personalized Training Path"
+            )
+
+            training_path = result.get(
+                "training_path",
+                []
+            )
+
+            if not training_path:
+
+                st.info(
+                    "No training path could be generated."
+                )
+
+            else:
+
+                st.caption(
+                    "Courses are selected for the "
+                    "highest-priority missing skills."
+                )
+
+                filtered_training_path = []
+
+                for item in training_path:
+
+                    if free_only:
+
+                        if not is_free_course(
+                            item.get("cost")
+                        ):
+
+                            continue
+
+                    filtered_training_path.append(
+                        item
+                    )
+
+                total_hours = calculate_time_to_ready(
+                    filtered_training_path
+                )
+
+                ready_days = (
+                    (total_hours / weekly_hours) * 7
+                    if weekly_hours > 0
+                    else 0
+                )
+
+                summary_col1, summary_col2, summary_col3 = st.columns(3)
+
+                with summary_col1:
+
+                    st.metric(
+                        "Training Hours",
+                        format_hours(total_hours)
+                    )
+
+                with summary_col2:
+
+                    st.metric(
+                        "Estimated Time-to-Ready",
+                        f"{ready_days:.1f} days"
+                    )
+
+                with summary_col3:
+
+                    free_count = sum(
+                        1
+                        for item in filtered_training_path
+                        if is_free_course(
+                            item.get("cost")
+                        )
+                    )
+
+                    st.metric(
+                        "Free Courses",
+                        free_count
+                    )
+
+                if free_only:
+
+                    st.info(
+                        "🆓 Free-only filter is active. "
+                        "Paid courses have been excluded."
+                    )
+
+                if not filtered_training_path:
+
+                    st.warning(
+                        "No courses remain after applying "
+                        "the selected filter."
+                    )
+
+                else:
+
+                    for item in filtered_training_path:
+
+                        with st.container(border=True):
+
+                            st.subheader(
+                                f"Step {item.get('step', '')}: "
+                                f"{item.get('skill', 'Skill')}"
+                            )
+
+                            st.write(
+                                f"**📚 Course:** "
+                                f"{item.get('course_name', 'N/A')}"
+                            )
+
+                            st.write(
+                                f"**🏫 Platform:** "
+                                f"{item.get('platform', 'N/A')}"
+                            )
+
+                            st.write(
+                                f"**📊 Level:** "
+                                f"{item.get('level', 'N/A')}"
+                            )
+
+                            st.write(
+                                f"**⏱️ Duration:** "
+                                f"{item.get('duration', 'N/A')}"
+                            )
+
+                            st.write(
+                                f"**📚 Learning Hours:** "
+                                f"{item.get('duration_hours', 'N/A')}"
+                            )
+
+                            st.write(
+                                f"**💰 Cost:** "
+                                f"{item.get('cost', 'N/A')}"
+                            )
+
+                            st.metric(
+                                "🎯 Jobs potentially unlocked",
+                                item.get(
+                                    "jobs_unlocked",
+                                    0
+                                )
+                            )
+
+                            course_url = item.get(
+                                "url"
+                            )
+
+                            if course_url:
+
+                                st.link_button(
+                                    "🔗 View Course",
+                                    course_url
+                                )
 
 
             # --------------------------------------------------
@@ -1296,5 +1082,3 @@ Career Interests:
             )
 
             st.exception(error)
-
-                       

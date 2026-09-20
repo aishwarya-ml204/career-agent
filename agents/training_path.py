@@ -7,12 +7,12 @@ def build_training_path(priority_skills, max_steps=5):
 
     for item in priority_skills:
 
-        skill = item["skill"]
+        skill = str(item["skill"]).strip(" []'\"")
         job_count = item["job_count"]
 
         courses = recommend_courses(
             [skill],
-            top_k=10
+            10
         )
 
         if not courses:

@@ -1,5 +1,6 @@
 import pandas as pd
 import re
+import ast
 
 
 JOBS_FILE = "data/job.csv"
@@ -28,26 +29,41 @@ def normalize_skill(skill):
 
 
 def extract_skills(skill_text):
-    """Extract skills while keeping skills inside parentheses together."""
+    """Extract and normalize skills safely."""
 
     if not skill_text:
         return []
 
-    text = str(skill_text).strip()
+    if isinstance(skill_text, list):
+        skills = skill_text
 
-    # Split only on separators that are outside parentheses.
-    skills = re.split(
-        r",(?=(?:[^()]*\([^()]*\))*[^()]*$)|[;|\n]+",
-        text
-    )
+    else:
+        text = str(skill_text).strip()
+
+        try:
+            parsed = ast.literal_eval(text)
+
+            if isinstance(parsed, list):
+                skills = parsed
+            else:
+                skills = [text]
+
+        except (ValueError, SyntaxError):
+            skills = re.split(r"[,;|\n]+", text)
 
     return [
-        normalize_skill(skill)
-        for skill in skills
-        if skill.strip()
-    ]
-
-
+    normalize_skill(
+        str(skill).strip().strip("'\"[]")
+    ).replace("rest", "rest apis")
+    if normalize_skill(
+        str(skill).strip().strip("'\"[]")
+    ) == "rest"
+    else normalize_skill(
+        str(skill).strip().strip("'\"[]")
+    )
+    for skill in skills
+    if str(skill).strip().strip("'\"[]")
+]
 def calculate_opportunity_scores(jobs):
     """
     Calculate how many job opportunities are associated
